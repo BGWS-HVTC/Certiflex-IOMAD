@@ -478,7 +478,7 @@ class renderer extends \plugin_renderer_base {
         if ($status->teamsubmissionenabled) {
             $group = $status->submissiongroup;
             if ($group) {
-                $team = format_string($group->name, false, $status->context);
+                $team = format_string($group->name, false, ['context' => $status->context]);
             } else if ($status->preventsubmissionnotingroup) {
                 if (count($status->usergroups) == 0) {
                     $team = '<span class="alert alert-error">' . get_string('noteam', 'assign') . '</span>';
@@ -656,7 +656,7 @@ class renderer extends \plugin_renderer_base {
             $cell1content = get_string('submissionteam', 'assign');
             $group = $status->submissiongroup;
             if ($group) {
-                $cell2content = format_string($group->name, false, $status->context);
+                $cell2content = format_string($group->name, false, ['context' => $status->context]);
             } else if ($status->preventsubmissionnotingroup) {
                 if (count($status->usergroups) == 0) {
                     $notification = new \core\output\notification(get_string('noteam', 'assign'), 'error');
@@ -675,7 +675,8 @@ class renderer extends \plugin_renderer_base {
             $this->add_table_row_tuple($t, $cell1content, $cell2content);
         }
 
-        if ($status->attemptreopenmethod != ASSIGN_ATTEMPT_REOPEN_METHOD_NONE) {
+        // If multiple attempts are allowed.
+        if ($status->maxattempts > 1 || $status->maxattempts == ASSIGN_UNLIMITED_ATTEMPTS) {
             $currentattempt = 1;
             if (!$status->teamsubmissionenabled) {
                 if ($status->submission) {

@@ -776,6 +776,7 @@ function scorm_option2text($scorm) {
  */
 function scorm_reset_course_form_definition(&$mform) {
     $mform->addElement('header', 'scormheader', get_string('modulenameplural', 'scorm'));
+    $mform->addElement('static', 'scormdelete', get_string('delete'));
     $mform->addElement('advcheckbox', 'reset_scorm', get_string('deleteallattempts', 'scorm'));
 }
 
@@ -820,7 +821,8 @@ function scorm_reset_gradebook($courseid, $type='') {
  * @return array status array
  */
 function scorm_reset_userdata($data) {
-    global $DB;
+    global $DB, $CFG;
+    require_once($CFG->dirroot.'/mod/scorm/locallib.php');
 
     $componentstr = get_string('modulenameplural', 'scorm');
     $status = [];
@@ -844,7 +846,7 @@ function scorm_reset_userdata($data) {
     // Any changes to the list of dates that needs to be rolled should be same during course restore and course reset.
     // See MDL-9367.
     shift_course_mod_dates('scorm', array('timeopen', 'timeclose'), $data->timeshift, $data->courseid);
-    $status[] = ['component' => $componentstr, 'item' => get_string('datechanged'), 'error' => false];
+    $status[] = ['component' => $componentstr, 'item' => get_string('date'), 'error' => false];
 
     return $status;
 }
@@ -1041,7 +1043,8 @@ function scorm_supports($feature) {
         case FEATURE_GRADE_OUTCOMES:          return true;
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
-        case FEATURE_MOD_PURPOSE:             return MOD_PURPOSE_CONTENT;
+        case FEATURE_MOD_PURPOSE:
+            return MOD_PURPOSE_INTERACTIVECONTENT;
 
         default: return null;
     }
@@ -1799,7 +1802,7 @@ function mod_scorm_core_calendar_get_valid_event_timestart_range(\calendar_event
  * @param  array  $args The path (the part after the filearea and before the filename).
  * @return array The itemid and the filepath inside the $args path, for the defined filearea.
  */
-function mod_scorm_get_path_from_pluginfile(string $filearea, array $args) : array {
+function mod_scorm_get_path_from_pluginfile(string $filearea, array $args): array {
     // SCORM never has an itemid (the number represents the revision but it's not stored in database).
     array_shift($args);
 

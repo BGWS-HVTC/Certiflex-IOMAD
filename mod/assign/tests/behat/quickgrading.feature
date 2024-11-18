@@ -30,7 +30,9 @@ Feature: In an assignment, teachers grade multiple students on one page
 
     And I am on the "Test assignment name" Activity page logged in as teacher1
     And I follow "View all submissions"
-    When I click on "Grade" "link" in the "Student 1" "table_row"
+    When I change window size to "large"
+    And I click on "Grade" "link" in the "Student 1" "table_row"
+    And I change window size to "medium"
     And I press "Save changes"
     And I am on the "Test assignment name" "assign activity" page
     Then I should see "1" in the "Needs grading" "table_row"
@@ -68,8 +70,7 @@ Feature: In an assignment, teachers grade multiple students on one page
       | Short name | skillZ! |
       | Scale | 1337dom scale |
     And I press "Save changes"
-    And I am on "Course 1" course homepage with editing mode on
-    And I add a "Assignment" to section "1" and I fill the form with:
+    And I add a assign activity to course "Course 1" section "1" and I fill the form with:
       | Assignment name | Test assignment name |
       | Description | Submit your online text |
       | assignsubmission_onlinetext_enabled | 1 |

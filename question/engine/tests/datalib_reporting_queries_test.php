@@ -16,6 +16,7 @@
 
 namespace core_question;
 
+use quiz_statistics\tests\statistics_helper;
 use mod_quiz\quiz_attempt;
 use mod_quiz\quiz_settings;
 use qubaid_list;
@@ -65,7 +66,7 @@ class datalib_reporting_queries_test extends \qbehaviour_walkthrough_test_base {
      * operations on the data, we use a single method to do the set-up, which
      * calls diffents methods to test each query.
      */
-    public function test_reporting_queries() {
+    public function test_reporting_queries(): void {
         // We create two usages, each with two questions, a short-answer marked
         // out of 5, and and essay marked out of 10.
         //
@@ -376,7 +377,6 @@ class datalib_reporting_queries_test extends \qbehaviour_walkthrough_test_base {
 
         // Calculate the statistics.
         $this->expectOutputRegex('~.*Calculations completed.*~');
-        $statisticstask = new \quiz_statistics\task\recalculate();
-        $statisticstask->execute();
+        statistics_helper::run_pending_recalculation_tasks();
     }
 }

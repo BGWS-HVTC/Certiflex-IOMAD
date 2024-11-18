@@ -51,7 +51,7 @@ export default class {
             editmode: this.reactive.isEditing,
             highlighted: state.course.highlighted ?? '',
         };
-        const sectionlist = state.course.sectionlist ?? [];
+        const sectionlist = this.listedSectionIds(state);
         sectionlist.forEach(sectionid => {
             const sectioninfo = state.section.get(sectionid) ?? {};
             const section = this.section(state, sectioninfo);
@@ -60,6 +60,20 @@ export default class {
         data.hassections = (data.sections.length != 0);
 
         return data;
+    }
+
+    /**
+     * Get the IDs of the sections that are listed as regular sections.
+     * @param {Object} state the current state.
+     * @returns {Number[]} the list of section ids that are listed.
+     */
+    listedSectionIds(state) {
+        const fullSectionList = state.course.sectionlist ?? [];
+        return fullSectionList.filter(sectionid => {
+            const sectioninfo = state.section.get(sectionid) ?? {};
+            // Delegated sections (controlled by a component) are not listed in course.
+            return sectioninfo.component === null;
+        });
     }
 
     /**
@@ -98,6 +112,10 @@ export default class {
             ...cminfo,
             isactive: false,
         };
+        if (cminfo.hasdelegatedsection) {
+            const sectioninfo = state.section.get(cminfo.delegatesectionid);
+            cm.sectioninfo = this.section(state, sectioninfo);
+        }
         return cm;
     }
 
@@ -130,6 +148,7 @@ export default class {
             id: cminfo.id,
             name: cminfo.name,
             sectionid: cminfo.sectionid,
+            hasdelegatedsection: cminfo.hasdelegatedsection,
             nextcmid,
         };
     }
@@ -195,7 +214,10 @@ export default class {
         if (cminfo.completionstate !== undefined) {
             data.state = cminfo.completionstate;
             data.hasstate = true;
-            const statename = this.COMPLETIONS[cminfo.completionstate] ?? 'NaN';
+            let statename = this.COMPLETIONS[cminfo.completionstate] ?? 'NaN';
+            if (cminfo.isoverallcomplete !== undefined && cminfo.isoverallcomplete === true) {
+                statename = 'complete';
+            }
             data[`is${statename}`] = true;
         }
         return data;

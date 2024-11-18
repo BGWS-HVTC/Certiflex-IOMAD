@@ -119,6 +119,20 @@ abstract class backup_activity_structure_step extends backup_structure_step {
         // Return the root element (activity)
         return $activity;
     }
+
+    /**
+     * Set a delegate section itemid mapping.
+     *
+     * @param string $pluginname the name of the plugin that is delegating the section.
+     * @param int $itemid the itemid of the section being delegated.
+     */
+    protected function set_delegated_section_mapping(string $pluginname, int $itemid) {
+        backup_structure_dbops::insert_backup_ids_record(
+            $this->get_backupid(),
+            "course_section::$pluginname::$itemid",
+            $this->task->get_moduleid()
+        );
+    }
 }
 
 /**
@@ -400,9 +414,14 @@ class backup_section_structure_step extends backup_structure_step {
 
         // Define each element separated
 
-        $section = new backup_nested_element('section', array('id'), array(
+        $section = new backup_nested_element(
+            'section',
+            ['id'],
+            [
                 'number', 'name', 'summary', 'summaryformat', 'sequence', 'visible',
-                'availabilityjson', 'timemodified'));
+                'availabilityjson', 'component', 'itemid', 'timemodified',
+            ]
+        );
 
         // attach format plugin structure to $section element, only one allowed
         $this->add_plugin_structure('format', $section, false);
@@ -472,7 +491,7 @@ class backup_course_structure_step extends backup_structure_step {
 
         $customfields = new backup_nested_element('customfields');
         $customfield = new backup_nested_element('customfield', array('id'), array(
-          'shortname', 'type', 'value', 'valueformat'
+            'shortname', 'type', 'value', 'valueformat', 'valuetrust',
         ));
 
         $courseformatoptions = new backup_nested_element('courseformatoptions');
@@ -554,6 +573,7 @@ class backup_course_structure_step extends backup_structure_step {
 
         $handler = core_course\customfield\course_handler::create();
         $fieldsforbackup = $handler->get_instance_data_for_backup($this->task->get_courseid());
+        $handler->backup_define_structure($this->task->get_courseid(), $customfield);
         $customfield->set_source_array($fieldsforbackup);
 
         // Some annotations
@@ -1356,7 +1376,7 @@ class backup_groups_structure_step extends backup_structure_step {
 
         $groupcustomfields = new backup_nested_element('groupcustomfields');
         $groupcustomfield = new backup_nested_element('groupcustomfield', ['id'], [
-            'shortname', 'type', 'value', 'valueformat', 'groupid']);
+            'shortname', 'type', 'value', 'valueformat', 'valuetrust', 'groupid']);
 
         $members = new backup_nested_element('group_members');
 
@@ -1371,7 +1391,7 @@ class backup_groups_structure_step extends backup_structure_step {
 
         $groupingcustomfields = new backup_nested_element('groupingcustomfields');
         $groupingcustomfield = new backup_nested_element('groupingcustomfield', ['id'], [
-            'shortname', 'type', 'value', 'valueformat', 'groupingid']);
+            'shortname', 'type', 'value', 'valueformat', 'valuetrust', 'groupingid']);
 
         $groupinggroups = new backup_nested_element('grouping_groups');
 
@@ -1663,7 +1683,13 @@ class backup_block_instance_structure_step extends backup_structure_step {
         // Transform configdata information if needed (process links and friends)
         $blockrec = $DB->get_record('block_instances', array('id' => $this->task->get_blockid()));
         if ($attrstotransform = $this->task->get_configdata_encoded_attributes()) {
-            $configdata = (array)unserialize(base64_decode($blockrec->configdata));
+            $configdata = array_filter(
+                (array) unserialize_object(base64_decode($blockrec->configdata)),
+                static function($value): bool {
+                    return !($value instanceof __PHP_Incomplete_Class);
+                }
+            );
+
             foreach ($configdata as $attribute => $value) {
                 if (in_array($attribute, $attrstotransform)) {
                     $configdata[$attribute] = $this->contenttransformer->process($value);
@@ -2110,14 +2136,19 @@ class backup_main_structure_step extends backup_structure_step {
 
         $activities = new backup_nested_element('activities');
 
-        $activity = new backup_nested_element('activity', null, array(
-            'moduleid', 'sectionid', 'modulename', 'title',
-            'directory'));
+        $activity = new backup_nested_element(
+            'activity',
+            null,
+            ['moduleid', 'sectionid', 'modulename', 'title', 'directory', 'insubsection']
+        );
 
         $sections = new backup_nested_element('sections');
 
-        $section = new backup_nested_element('section', null, array(
-            'sectionid', 'title', 'directory'));
+        $section = new backup_nested_element(
+            'section',
+            null,
+            ['sectionid', 'title', 'directory', 'parentcmid', 'modname']
+        );
 
         $course = new backup_nested_element('course', null, array(
             'courseid', 'title', 'directory'));

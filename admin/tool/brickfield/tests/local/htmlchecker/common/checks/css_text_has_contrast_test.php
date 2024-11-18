@@ -178,10 +178,58 @@ EOD;
     </html>
 EOD;
 
+    /** @var string HTML with px18 fail colour values. */
+    private $px18 = <<<EOD
+    <body><p style="color:#EF0000; background-color:white; font-size: 18px">
+    This is not contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with px19bold pass colour values. */
+    private $px19bold = <<<EOD
+    <body><p style="color:#EF0000; background-color:white; font-size: 19px; font-weight: bold;">
+    This is contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with px18 pass colour values. */
+    private $px18pass = <<<EOD
+    <body><p style="color:#E60000; background-color:white; font-size: 18px">
+    This is contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with medium size colour values. */
+    private $mediumfail = <<<EOD
+    <body><p style="color:#EF0000; background-color:white; font-size: medium">
+    This is not contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with px18 colour values. */
+    private $mediumpass = <<<EOD
+    <body><p style="color:#E60000; background-color:white; font-size: medium">
+    This is contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with larger fail colour values. */
+    private $largerfail = <<<EOD
+    <body><p style="color:#FF6161; background-color:white; font-size: larger">
+    This is not contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with px18 colour values. */
+    private $largerpass = <<<EOD
+    <body><p style="color:#FF5C5C; background-color:white; font-size: larger;">
+    This is contrasty enough.</p></body>
+EOD;
+
+    /** @var string HTML with px18 colour values. */
+    private $largerboldpass = <<<EOD
+    <body><p style="color:#FF5C5C; background-color:white; font-size: larger; font-weight: bold;">
+    This is contrasty enough.</p></body>
+EOD;
+
     /**
      * Test for the area assign intro
      */
-    public function test_check() {
+    public function test_check(): void {
         $results = $this->get_checker_results($this->htmlfail1);
         $this->assertTrue($results[0]->element->tagName == 'p');
 
@@ -207,7 +255,7 @@ EOD;
     /**
      * Test with valid colour names.
      */
-    public function test_check_for_namedcolours() {
+    public function test_check_for_namedcolours(): void {
         $results = $this->get_checker_results($this->namecolours);
         $this->assertTrue($results[0]->element->tagName == 'p');
     }
@@ -215,7 +263,7 @@ EOD;
     /**
      * Test with invalid colour names.
      */
-    public function test_check_for_invalidcolours() {
+    public function test_check_for_invalidcolours(): void {
         $results = $this->get_checker_results($this->invalidcolours);
         $this->assertTrue($results[0]->element->tagName == 'p');
     }
@@ -223,7 +271,7 @@ EOD;
     /**
      * Test with invalid colour numeric values.
      */
-    public function test_check_for_invalidvalues() {
+    public function test_check_for_invalidvalues(): void {
         $results = $this->get_checker_results($this->invalidvalue);
         $this->assertTrue($results[0]->element->tagName == 'p');
     }
@@ -231,8 +279,72 @@ EOD;
     /**
      * Test with empty colour values.
      */
-    public function test_check_for_emptyvalues() {
+    public function test_check_for_emptyvalues(): void {
         $results = $this->get_checker_results($this->emptyvalue);
+        $this->assertEmpty($results);
+    }
+
+    /**
+     * Test for text px18 with insufficient contrast of 4.49.
+     */
+    public function test_check_for_px18_fail(): void {
+        $results = $this->get_checker_results($this->px18);
+        $this->assertTrue($results[0]->element->tagName == 'p');
+    }
+
+    /**
+     * Test for text px19 bold with sufficient contrast of 4.49.
+     */
+    public function test_check_for_px19bold_pass(): void {
+        $results = $this->get_checker_results($this->px19bold);
+        $this->assertEmpty($results);
+    }
+
+    /**
+     * Test for text px18 with sufficient contrast of 4.81.
+     */
+    public function test_check_for_px18_pass(): void {
+        $results = $this->get_checker_results($this->px18pass);
+        $this->assertEmpty($results);
+    }
+
+    /**
+     * Test for medium (12pt) text with insufficient contrast of 4.49.
+     */
+    public function test_check_for_medium_fail(): void {
+        $results = $this->get_checker_results($this->mediumfail);
+        $this->assertTrue($results[0]->element->tagName == 'p');
+    }
+
+    /**
+     * Test for medium (12pt) text with sufficient contrast of 4.81.
+     */
+    public function test_check_for_medium_pass(): void {
+        $results = $this->get_checker_results($this->mediumpass);
+        $this->assertEmpty($results);
+    }
+
+    /**
+     * Test for larger (14pt) text with insufficient contrast of 2.94.
+     */
+    public function test_check_for_larger_fail(): void {
+        $results = $this->get_checker_results($this->largerfail);
+        $this->assertTrue($results[0]->element->tagName == 'p');
+    }
+
+    /**
+     * Test for larger (14pt) text with insufficient contrast of 3.02.
+     */
+    public function test_check_for_larger_pass(): void {
+        $results = $this->get_checker_results($this->largerpass);
+        $this->assertTrue($results[0]->element->tagName == 'p');
+    }
+
+    /**
+     * Test for larger (14pt) bold text with sufficient contrast of 3.02.
+     */
+    public function test_check_for_largerbold_pass(): void {
+        $results = $this->get_checker_results($this->largerboldpass);
         $this->assertEmpty($results);
     }
 }

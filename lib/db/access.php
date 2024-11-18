@@ -43,8 +43,8 @@
  * The variable name for the capability definitions array is $capabilities
  *
  * For more information, take a look to the documentation available:
- *     - Access API: {@link http://docs.moodle.org/dev/Access_API}
- *     - Upgrade API: {@link http://docs.moodle.org/dev/Upgrade_API}
+ *     - Access API: {@link https://moodledev.io/docs/apis/subsystems/access}
+ *     - Upgrade API: {@link https://moodledev.io/docs/guides/upgrade}
  *
  * @package   core_access
  * @category  access
@@ -2786,6 +2786,13 @@ $capabilities = array(
         ],
     ],
 
+    // Allow users to view all custom reports.
+    'moodle/reportbuilder:viewall' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [],
+    ],
+
     // Allow users to create/edit their own custom reports.
     'moodle/reportbuilder:edit' => [
         'captype' => 'write',
@@ -2840,5 +2847,15 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW,
             'manager' => CAP_ALLOW,
         ]
+    ],
+
+    // Allow users to edit course welcome messages.
+    'moodle/course:editcoursewelcomemessage' => [
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
     ],
 );
