@@ -4568,6 +4568,9 @@ function course_get_recent_courses(?int $userid = null, int $limit = 0, int $off
         });
     }
 
+    // IOMAD - we want to only show courses for the current company
+    $recentcourses = iomad::iomad_filter_courses($recentcourses);
+
     return $recentcourses;
 }
 
