@@ -6,9 +6,121 @@ More detailed information on key changes can be found in the [Developer update n
 
 The format of this change log follows the advice given at [Keep a CHANGELOG](https://keepachangelog.com).
 
-## 4.5+
+## 4.5.2
 
 ### core
+
+#### Added
+
+- A new core\ip_utils::normalize_internet_address() method is created to sanitize an IP address, a range of IP addresses, a domain name or a wildcard domain matching pattern.
+
+  Moodle previously allowed entries such as 192.168. or .moodle.org for certain variables (eg: $CFG->proxybypass). Since MDL-74289, these formats are no longer allowed. This method converts this informations into an authorized format. For example, 192.168. becomes 192.168.0.0/16 and .moodle.org becomes *.moodle.org.
+
+  Also a new core\ip_utils::normalize_internet_address_list() method is created. Based on core\ip_utils::normalize_internet_address(), this method normalizes a string containing a series of Internet addresses.
+
+  For more information see [MDL-79121](https://tracker.moodle.org/browse/MDL-79121)
+
+#### Changed
+
+- The `core_renderer::tag_list` function now has a new parameter named `displaylink`. When `displaylink` is set to `true`, the tag name will be displayed as a clickable hyperlink. Otherwise, it will be rendered as plain text.
+
+  For more information see [MDL-75075](https://tracker.moodle.org/browse/MDL-75075)
+- The following test classes have been moved into autoloadable locations:
+
+  | Old location | New classname |
+  | --- | --- |
+  | `\core\tests\route_testcase` | `\core\tests\router\route_testcase` |
+  | `\core\router\mocking_route_loader` | `\core\tests\router\mocking_route_loader` |
+
+  For more information see [MDL-83968](https://tracker.moodle.org/browse/MDL-83968)
+
+### core_completion
+
+#### Added
+
+- The method `count_modules_completed` now delegate the logic to count the completed modules to the DBMS improving the performance of the method.
+
+  For more information see [MDL-83917](https://tracker.moodle.org/browse/MDL-83917)
+
+### core_courseformat
+
+#### Fixed
+
+- HTML IDs relating to section collapse/expand have been changed in the course format templates.
+  - core_courseformat/local/content/section/header #collapssesection{{num}} has been changed to #collapsesectionid{{id}}
+  - core_courseformat/local/content/section/content #coursecontentcollapse{{num}} had been changed to #coursecontentcollapseid{{id}}
+
+  For more information see [MDL-82679](https://tracker.moodle.org/browse/MDL-82679)
+
+### core_question
+
+#### Added
+
+- The `get_bulk_actions()` method on the base `plugin_features_base` class has been changed to allow a qbank view object to be passed through. This is nullable and therefore optional for qbank plugins which don't need to do so.
+
+  For more information see [MDL-79281](https://tracker.moodle.org/browse/MDL-79281)
+
+### core_reportbuilder
+
+#### Added
+
+- The `core_reportbuilder_testcase` class has been moved to new autoloaded `core_reportbuilder\tests\core_reportbuilder_testcase` location, affected tests no longer have to manually require `/reportbuilder/tests/helpers.php`
+
+  For more information see [MDL-84000](https://tracker.moodle.org/browse/MDL-84000)
+
+### core_tag
+
+#### Changed
+
+- The `core_tag\taglist` class now includes a new property called `displaylink`, which has a default value of `true`. When `displaylink` is set to `true`, the tag name will be displayed as a clickable hyperlink. If `displaylink` is set to `false`, the tag name will be rendered as plain text instead.
+
+  For more information see [MDL-75075](https://tracker.moodle.org/browse/MDL-75075)
+
+### mod_assign
+
+#### Fixed
+
+- The unit test for the privacy provider has been marked as final.
+
+  A number of core tests had been incorrectly configured to extend this test
+  but should instead be extending `\mod_assign\tests\provider_testcase`.
+
+  Any community plugins extending the `\mod_assign\privacy\provider_test` test
+  class should be updated to extend `\mod_assign\tests\provider_testcase` instead.
+
+  For more information see [MDL-81520](https://tracker.moodle.org/browse/MDL-81520)
+
+### mod_quiz
+
+#### Changed
+
+- The `quiz_question_tostring` method now includes a new boolean parameter, `displaytaglink`. This parameter specifies whether the tag name in the question bank should be displayed as a clickable hyperlink (`true`) or as plain text (`false`).
+
+  For more information see [MDL-75075](https://tracker.moodle.org/browse/MDL-75075)
+
+### tool_behat
+
+#### Added
+
+- New Behat step `\behat_general::the_url_should_match()` has been added to allow checking the current URL. You can use it to check whether a user has been redirected to the expected location.
+  e.g. `And the url should match "/mod/forum/view\.php\?id=[0-9]+"`
+
+  For more information see [MDL-83617](https://tracker.moodle.org/browse/MDL-83617)
+
+## 4.5.1
+
+### core
+
+#### Added
+
+- `\core\output\activity_header` now uses the `is_title_allowed()` method when setting the title in the constructor.
+
+  This method has been improved to give priority to the 'notitle' option in the theme config for the current page layout, over the top-level option in the theme.
+
+  For example, the Boost theme sets `$THEME->activityheaderconfig['notitle'] = true;` by default, but in its `secure` pagelayout, it has `'notitle' = false`.
+  This prevents display of the title in all layouts except `secure`.
+
+  For more information see [MDL-75610](https://tracker.moodle.org/browse/MDL-75610)
 
 #### Changed
 
@@ -41,6 +153,14 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 
   For more information see [MDL-83432](https://tracker.moodle.org/browse/MDL-83432)
 
+### core_form
+
+#### Changed
+
+- The `cohort` form element now accepts new `includes` option, which is passed to the corresponding external service to determine which cohorts to return (self, parents, all)
+
+  For more information see [MDL-83641](https://tracker.moodle.org/browse/MDL-83641)
+
 ### core_reportbuilder
 
 #### Changed
@@ -48,6 +168,20 @@ The format of this change log follows the advice given at [Keep a CHANGELOG](htt
 - The `get_active_conditions` method of the base report class has a new `$checkavailable` parameter to determine whether to check the returned conditions availability
 
   For more information see [MDL-82809](https://tracker.moodle.org/browse/MDL-82809)
+
+### mod_quiz
+
+#### Changed
+
+- The `\mod_quiz\attempt_walkthrough_from_csv_test` unit test has been marked as final and should not be extended by other tests.
+
+  All shared functionality has been moved to a new autoloadable test-case:
+  `\mod_quiz\tests\attempt_walkthrough_testcase`.
+
+  To support this testcase the existing `$files` instance property should be replaced with a new static method, `::get_test_files`.
+  Both the existing instance property and the new static method can co-exist.
+
+  For more information see [MDL-81521](https://tracker.moodle.org/browse/MDL-81521)
 
 ## 4.5
 
