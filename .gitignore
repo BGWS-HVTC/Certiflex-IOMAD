@@ -110,3 +110,30 @@ UPGRADING-CURRENT.md
 
 # Search all users to find spam users
 /admin/tool/spamcleaner
+
+# CAS Authentication
+/auth/cas
+
+# Authenticate users against external DB
+/auth/db
+
+# IOMAD specific OIDC
+/auth/iomadoidc
+
+# IOMAD specific SAML2
+/auth/iomadsaml2
+
+# LDAP authentication
+/auth/ldap
+
+# LTI authentication
+/auth/lti
+
+# MoodleNet authentication
+/auth/mnet
+
+# OAuth2 authentication
+/auth/oauth2
+
+# Shibboleth authentication
+/auth/shibboleth
