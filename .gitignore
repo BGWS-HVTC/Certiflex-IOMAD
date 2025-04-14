@@ -59,3 +59,54 @@ moodle-plugin-ci.phar
 phpcs.xml
 jsconfig.json
 UPGRADING-CURRENT.md
+
+
+### BGWS removing unnecessary plugins
+
+# Behat is PHP testing framework
+/admin/tool/behat
+
+# checks accessibility of site
+/admin/tool/brickfield
+
+# List all components via Grunt
+/admin/tool/componentlibrary
+
+# Add a custom language
+/admin/tool/customlang
+
+# Transfer DB
+/admin/tool/dbtransfer
+
+# Generate testing courses
+/admin/tool/generator
+
+# Update all links from HTTP to HTTPS
+/admin/tool/httpsreplace
+
+# Install plugin by uploading zip or from Moodle plugin catalog
+/admin/tool/installaddon
+
+# IOMAD tool to create fake users for testing
+/admin/tool/iomadsite
+
+# Allow in-bound emails to system
+/admin/tool/messageinbound
+
+# Allow privileged user import content from MoodleNet
+/admin/tool/moodlenet
+
+# Fix lang tags from previous format
+/admin/tool/multilangupgrade
+
+# Allow OAuth2 with predefined SPs or custom
+/admin/tool/oauth2
+
+# PHP Unit tests documentation
+/admin/tool/phpunit
+
+# Profiling for PHP (requires other libraries)
+/admin/tool/profiling
+
+# Search all users to find spam users
+/admin/tool/spamcleaner
