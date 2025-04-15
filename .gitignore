@@ -236,3 +236,7 @@ UPGRADING-CURRENT.md
     /portfolio/googledocs
 ### Mahara ePortfolio (mnet)
     /portfolio/mahara
+
+# Question bank
+### Export to XML
+    /question/bank/exporttoxml
