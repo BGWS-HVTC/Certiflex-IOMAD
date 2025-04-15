@@ -292,3 +292,5 @@ UPGRADING-CURRENT.md
     /lib/google
 ### Guzzle
     /lib/guzzlehttp
+### ADOdb https://docs.moodle.org/dev/ADOdb
+    /lib/adodb
