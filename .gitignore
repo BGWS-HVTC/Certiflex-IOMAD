@@ -148,3 +148,7 @@ UPGRADING-CURRENT.md
     /blocks/tag_flickr
 ### Display Youtube videos
     /blocks/tag_youtube
+
+# Cache Stores
+### APCU
+    /cache/stores/apcu
