@@ -203,3 +203,7 @@ UPGRADING-CURRENT.md
     /media/player/vimeo
 ### Youtube
     /media/player/youtube
+
+# Message output
+### Airnotifier
+    /message/output/airnotifier
