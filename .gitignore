@@ -288,3 +288,6 @@ UPGRADING-CURRENT.md
     /blocks/iomad_company_admin/wsclients/*.php
 ### AWS-SDK
     /lib/aws-sdk
+### Google-SDK
+    /lib/google
+    
