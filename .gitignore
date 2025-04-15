@@ -246,3 +246,28 @@ UPGRADING-CURRENT.md
     /question/format/blackboard_six
 ### Import XML-formatted questions
     /question/format/xml
+
+# Repository
+### Dropbox
+    /repository/dropbox
+### EQUELLA
+    /repository/equella
+### Flickr
+    /repository/flickr
+    /repository/flickr_public
+### Google Docs
+    /repository/googledocs
+### Merlot.org
+    /repository/merlot
+### Nextcloud
+    /repository/nextcloud
+### OneDrive
+    /repository/onedrive
+### S3
+    /repository/s3
+### WebDav
+    /repository/webdav
+### Wikimedia
+    /repository/wikimedia
+### Youtube
+    /repository/youtube
