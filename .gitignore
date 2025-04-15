@@ -290,4 +290,5 @@ UPGRADING-CURRENT.md
     /lib/aws-sdk
 ### Google-SDK
     /lib/google
-    
+### Guzzle
+    /lib/guzzlehttp
