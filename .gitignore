@@ -286,3 +286,5 @@ UPGRADING-CURRENT.md
 # SAST specific
 ### Removing example web service clients for IOMAD
     /blocks/iomad_company_admin/wsclients/*.php
+### AWS-SDK
+    /lib/aws-sdk
