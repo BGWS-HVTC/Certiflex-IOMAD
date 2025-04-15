@@ -63,77 +63,88 @@ UPGRADING-CURRENT.md
 
 ### BGWS removing unnecessary plugins
 
-# Behat is PHP testing framework
-/admin/tool/behat
+# Admin Tools
+###  Behat is PHP testing framework
+    /admin/tool/behat
+###  checks accessibility of site
+    /admin/tool/brickfield
+###  List all components via Grunt
+    /admin/tool/componentlibrary
+###  Add a custom language
+    /admin/tool/customlang
+###  Transfer DB
+    /admin/tool/dbtransfer
+###  Generate testing courses
+    /admin/tool/generator
+###  Update all links from HTTP to HTTPS
+    /admin/tool/httpsreplace
+###  Install plugin by uploading zip or from Moodle plugin catalog
+    /admin/tool/installaddon
+###  IOMAD tool to create fake users for testing
+    /admin/tool/iomadsite
+###  Allow in-bound emails to system
+    /admin/tool/messageinbound
+###  Allow privileged user import content from MoodleNet
+    /admin/tool/moodlenet
+###  Fix lang tags from previous format
+    /admin/tool/multilangupgrade
+###  Allow OAuth2 with predefined SPs or custom
+    /admin/tool/oauth2
+###  PHP Unit tests documentation
+    /admin/tool/phpunit
+###  Profiling for PHP (requires other libraries)
+    /admin/tool/profiling
+###  Search all users to find spam users
+    /admin/tool/spamcleaner
 
-# checks accessibility of site
-/admin/tool/brickfield
+# Authentication
+### CAS Authentication
+    /auth/cas
+### Authenticate users against external DB
+    /auth/db
+### IOMAD specific OIDC
+    /auth/iomadoidc
+### IOMAD specific SAML2
+    /auth/iomadsaml2
+### LDAP authentication
+    /auth/ldap
+### LTI authentication
+    /auth/lti
+### MoodleNet authentication
+    /auth/mnet
+### OAuth2 authentication
+    /auth/oauth2
+### Shibboleth authentication
+    /auth/shibboleth
 
-# List all components via Grunt
-/admin/tool/componentlibrary
-
-# Add a custom language
-/admin/tool/customlang
-
-# Transfer DB
-/admin/tool/dbtransfer
-
-# Generate testing courses
-/admin/tool/generator
-
-# Update all links from HTTP to HTTPS
-/admin/tool/httpsreplace
-
-# Install plugin by uploading zip or from Moodle plugin catalog
-/admin/tool/installaddon
-
-# IOMAD tool to create fake users for testing
-/admin/tool/iomadsite
-
-# Allow in-bound emails to system
-/admin/tool/messageinbound
-
-# Allow privileged user import content from MoodleNet
-/admin/tool/moodlenet
-
-# Fix lang tags from previous format
-/admin/tool/multilangupgrade
-
-# Allow OAuth2 with predefined SPs or custom
-/admin/tool/oauth2
-
-# PHP Unit tests documentation
-/admin/tool/phpunit
-
-# Profiling for PHP (requires other libraries)
-/admin/tool/profiling
-
-# Search all users to find spam users
-/admin/tool/spamcleaner
-
-# CAS Authentication
-/auth/cas
-
-# Authenticate users against external DB
-/auth/db
-
-# IOMAD specific OIDC
-/auth/iomadoidc
-
-# IOMAD specific SAML2
-/auth/iomadsaml2
-
-# LDAP authentication
-/auth/ldap
-
-# LTI authentication
-/auth/lti
-
-# MoodleNet authentication
-/auth/mnet
-
-# OAuth2 authentication
-/auth/oauth2
-
-# Shibboleth authentication
-/auth/shibboleth
+# Blocks
+### Review from Brickfield tool
+    /blocks/accessreview
+### Display user's badges
+    /blocks/badges
+### Display Blog menu
+    /blocks/blog_menu
+### Display recent Blogs
+    /blocks/blog_recent
+### Display Blog tags
+    /blocks/blog_tags
+### Display Global Search
+    /blocks/globalsearch
+### Display randomg Glossary entry
+    /blocks/glossary_random
+### IOMAD Commerce block
+    /blocks/iomad_commerce
+### IOMAD display Online Users
+    /blocks/iomad_onlineusers
+### IOMAD welcome block
+    /blocks/iomad_welcome
+### Display available MoodleNet hosts
+    /blocks/mnet_hosts
+### Display online users
+    /blocks/online_users
+### Display RSS feed
+    /blocks/rss_client
+### Display Flickr images
+    /blocks/tag_flickr
+### Display Youtube videos
+    /blocks/tag_youtube
