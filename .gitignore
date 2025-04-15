@@ -181,6 +181,13 @@ UPGRADING-CURRENT.md
 ### Unoconv - we are not supporting PDF feedback - https://docs.moodle.org/405/en/Universal_Office_Converter_(unoconv)
     /files/converter/unoconv
 
+# Filters
+### REMOVING THESE DUE TO SAST
+### Algebra
+    /filter/algebra
+### LaTeX
+    /filter/tex
+
 # Grade export
 ### OpenDocument
     /grade/export/ods
