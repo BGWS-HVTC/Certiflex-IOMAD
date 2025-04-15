@@ -207,3 +207,11 @@ UPGRADING-CURRENT.md
 # Message output
 ### Airnotifier
     /message/output/airnotifier
+
+# Activity modules
+### BigBlueButton
+    /mod/bigbluebuttonbn
+### IMS content package
+    /mod/imscp
+### LTI
+    /mod/lti
