@@ -175,3 +175,6 @@ UPGRADING-CURRENT.md
 ### Paypal
     /enrol/paypal
 
+# Document Converters
+### Google Drive
+    /files/converter/googledrive
