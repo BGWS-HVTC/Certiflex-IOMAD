@@ -176,5 +176,23 @@ UPGRADING-CURRENT.md
     /enrol/paypal
 
 # Document Converters
+### Leaving unoconv - https://docs.moodle.org/405/en/Universal_Office_Converter_(unoconv)
 ### Google Drive
     /files/converter/googledrive
+
+# Grade export
+### OpenDocument
+    /grade/export/ods
+### Excel
+    /grade/export/xls
+### XML
+    /grade/export/xml
+
+# Grade import
+### User directly pasted from spreadsheet
+    /grade/import/direct
+### XML
+    /grade/import/xml
+
+# Local plugins
+/
