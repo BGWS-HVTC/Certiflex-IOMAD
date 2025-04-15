@@ -152,3 +152,26 @@ UPGRADING-CURRENT.md
 # Cache Stores
 ### APCU
     /cache/stores/apcu
+
+# Data formats
+### Excel
+    /dataformat/excel
+### OpenDocument
+    /dataformat/ods
+
+# Enrollment methods
+### Fee (we won't have payment methods)
+    /enrol/fee
+### Guest access to courses
+    /enrol/guest
+### IMS Enterprise (https://docs.moodle.org/405/en/IMS_Enterprise)
+    /enrol/imsenterprise
+### LDAP
+    /enrol/ldap
+### LTI
+    /enrol/lti
+### MNet
+    /enrol/mnet
+### Paypal
+    /enrol/paypal
+
