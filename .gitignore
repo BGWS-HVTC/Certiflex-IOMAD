@@ -240,3 +240,9 @@ UPGRADING-CURRENT.md
 # Question bank
 ### Export to XML
     /question/bank/exporttoxml
+
+# Question format
+### Import Blackboard-formatted questions
+    /question/format/blackboard_six
+### Import XML-formatted questions
+    /question/format/xml
