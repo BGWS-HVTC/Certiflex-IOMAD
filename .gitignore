@@ -195,4 +195,11 @@ UPGRADING-CURRENT.md
     /grade/import/xml
 
 # Local plugins
-/
+### Sync OIDC
+    /local/iomad_oidc_sync
+
+# Media players
+### Vimeo
+    /media/player/vimeo
+### Youtube
+    /media/player/youtube
