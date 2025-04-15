@@ -282,3 +282,7 @@ UPGRADING-CURRENT.md
 # Search engine
 ### SOLR
     /search/engine/solr
+
+# SAST specific
+### Removing example web service clients for IOMAD
+    /blocks/iomad_company_admin/wsclients/*.php
