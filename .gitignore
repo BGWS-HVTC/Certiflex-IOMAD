@@ -176,9 +176,10 @@ UPGRADING-CURRENT.md
     /enrol/paypal
 
 # Document Converters
-### Leaving unoconv - https://docs.moodle.org/405/en/Universal_Office_Converter_(unoconv)
 ### Google Drive
     /files/converter/googledrive
+### Unoconv - we are not supporting PDF feedback - https://docs.moodle.org/405/en/Universal_Office_Converter_(unoconv)
+    /files/converter/unoconv
 
 # Grade export
 ### OpenDocument
@@ -215,3 +216,7 @@ UPGRADING-CURRENT.md
     /mod/imscp
 ### LTI
     /mod/lti
+
+# Assignment feedback
+### Annotate PDF - requires YUI
+    /mod/feedback/editpdf
