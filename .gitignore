@@ -229,3 +229,10 @@ UPGRADING-CURRENT.md
 ### Take quiz in Safe Exam Browser
     /mod/quiz/accessrule/seb
 
+# Portfolio
+### Flickr
+    /portfolio/flickr
+### Google Docs
+    /portfolio/googledocs
+### Mahara ePortfolio (mnet)
+    /portfolio/mahara
