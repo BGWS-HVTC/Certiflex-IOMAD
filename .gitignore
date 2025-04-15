@@ -220,3 +220,12 @@ UPGRADING-CURRENT.md
 # Assignment feedback
 ### Annotate PDF - requires YUI
     /mod/feedback/editpdf
+
+# Book tools
+### Export book as IMS content package
+    /mod/book/tool/exportimscp
+
+# Quiz access rule
+### Take quiz in Safe Exam Browser
+    /mod/quiz/accessrule/seb
+
