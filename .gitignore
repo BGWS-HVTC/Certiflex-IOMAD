@@ -271,3 +271,7 @@ UPGRADING-CURRENT.md
     /repository/wikimedia
 ### Youtube
     /repository/youtube
+
+# Search engine
+### SOLR
+    /search/engine/solr
