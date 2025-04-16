@@ -70,8 +70,6 @@ UPGRADING-CURRENT.md
     /admin/tool/brickfield
 ###  List all components via Grunt
     /admin/tool/componentlibrary
-###  Add a custom language
-    /admin/tool/customlang
 ###  Transfer DB
     /admin/tool/dbtransfer
 ###  Generate testing courses
