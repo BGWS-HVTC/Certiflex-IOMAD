@@ -115,7 +115,11 @@ class core_scss extends \ScssPhp\ScssPhp\Compiler {
 
         if (!empty($pathtosassc) && is_executable($pathtosassc) && !is_dir($pathtosassc)) {
             $process = proc_open(
-                $pathtosassc . ' -I' . implode(':', $this->importPaths) . ' -s',
+                # BGWS Modification START
+                # Author - Tom Blankenship
+                # Jira ticket - CER-36
+                escapeshellarg($pathtosassc) . ' -I' . implode(':', array_map('escapeshellarg', $this->importPaths)) . ' -s',
+                # BGWS Modification END
                 [
                     ['pipe', 'r'], // Set the process stdin pipe to read mode.
                     ['pipe', 'w'], // Set the process stdout pipe to write mode.

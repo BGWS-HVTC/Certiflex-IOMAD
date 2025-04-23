@@ -139,7 +139,11 @@ class processor implements  \core_analytics\classifier, \core_analytics\regresso
         $output = null;
         $exitcode = null;
         // Execute it sending the standard error to $output.
-        $result = exec($cmd . ' 2>&1', $output, $exitcode);
+        # BGWS Modification START
+        # Author - Tom Blankenship
+        # Jira ticket - CER-36
+        $result = exec(escapeshellarg($cmd) . ' 2>&1', $output, $exitcode);
+        # BGWS Modification END
 
         if ($exitcode != 0) {
             return get_string('pythonpackagenotinstalled', 'mlbackend_python', $cmd);

@@ -151,7 +151,7 @@ class behat_command {
 
         $currentcwd = getcwd();
         chdir($CFG->dirroot);
-        exec(self::get_behat_command() . ' ' . $options, $output, $code);
+        exec(escapeshellcmd(self::get_behat_command()) . ' ' . escapeshellarg($options), $output, $code);
         chdir($currentcwd);
 
         return array($output, $code);
