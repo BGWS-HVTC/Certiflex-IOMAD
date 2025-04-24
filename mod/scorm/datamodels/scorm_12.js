@@ -612,7 +612,14 @@ function SCORMapi1_2(def, cmiobj, cmiint, cmistring256, cmistring4096, scormdebu
 
         var temp = new obj.constructor(); // changed (twice)
         for(var key in obj) {
-            temp[key] = CloneObj(obj[key]);
+            // BGWS Modification START
+            // Author - Kevin Crawford
+            // Jira ticket - CER-46
+            // Pre Change Line: temp[key] = CloneObj(obj[key]);
+            if (!["__proto__", "constructor", "prototype"].includes(key)) {
+                temp[key] = CloneObj(obj[key]);
+            }
+            // BGWS Modification END
         }
 
         return temp;
