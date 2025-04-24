@@ -293,3 +293,8 @@ UPGRADING-CURRENT.md
 # MDR - CER-35
 # Removing phpinfo for SAST scan
 /admin/phpinfo.php
+
+# MDR - CER-52 + CER-53
+# Removing phpinfo for SAST scan
+/h5p/h5plib/v127/joubel/editor/ckeditor5/package-lock.json
+/h5p/h5plib/v127/joubel/editor/ckeditor5/package.json
