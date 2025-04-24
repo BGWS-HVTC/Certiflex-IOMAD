@@ -59,12 +59,16 @@ if (!isset($USER->courseselectors[$selectorhash])) {
 // Get the options.
 $options = $USER->courseselectors[$selectorhash];
 
-if ($debugmode) {
-    echo 'Search string: ', $search, "\n";
-    echo 'Options: ';
-    var_dump($options);
-    echo "\n";
-}
+# BGWS Modification START
+# Author - Anna Helton
+# Jira ticket - CER-40 - Using var_dump() can expose sensitive info to users
+// if ($debugmode) {
+//     echo 'Search string: ', $search, "\n";
+//     echo 'Options: ';
+//     var_dump($options);
+//     echo "\n";
+// }
+# BGWS Modification END
 
 // Create the appropriate courseselector.
 $classname = $options['class'];

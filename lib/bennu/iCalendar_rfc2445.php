@@ -765,7 +765,11 @@ function rfc2445_is_valid_value($value, $type) {
 
     // TODO: remove this assertion
     trigger_error('bad code path', E_USER_WARNING);
-    var_dump($type);
+    # BGWS Modification START
+    # Author - Anna Helton
+    # Jira ticket - CER-40 - Using var_dump() can expose sensitive info to users
+    //var_dump($type);
+    # BGWS Modification END    
     return false;
 }
 
