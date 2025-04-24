@@ -3539,12 +3539,16 @@ class curl {
         }
         curl_setopt($curl, CURLOPT_HTTPHEADER, $this->header);
 
-        if ($this->debug) {
-            echo '<h1>Options</h1>';
-            var_dump($this->options);
-            echo '<h1>Header</h1>';
-            var_dump($this->header);
-        }
+        # BGWS Modification START
+        # Author - Anna Helton
+        # Jira ticket - CER-40 - Using var_dump() can expose sensitive info to users
+        // if ($this->debug) {
+        //     echo '<h1>Options</h1>';
+        //     var_dump($this->options);
+        //     echo '<h1>Header</h1>';
+        //     var_dump($this->header);
+        // }
+        # BGWS Modification END
 
         // Do not allow infinite redirects.
         if (!isset($this->options['CURLOPT_MAXREDIRS'])) {
@@ -3956,15 +3960,18 @@ class curl {
         if ($this->cache) {
             $this->cache->set($this->options, $ret);
         }
-
-        if ($this->debug) {
-            echo '<h1>Return Data</h1>';
-            var_dump($ret);
-            echo '<h1>Info</h1>';
-            var_dump($this->info);
-            echo '<h1>Error</h1>';
-            var_dump($this->error);
-        }
+        # BGWS Modification START
+        # Author - Anna Helton
+        # Jira ticket - CER-40 - Using var_dump() can expose sensitive info to users
+        // if ($this->debug) {
+        //     echo '<h1>Return Data</h1>';
+        //     var_dump($ret);
+        //     echo '<h1>Info</h1>';
+        //     var_dump($this->info);
+        //     echo '<h1>Error</h1>';
+        //     var_dump($this->error);
+        // }
+        # BGWS Modification END
 
         curl_close($curl);
 
