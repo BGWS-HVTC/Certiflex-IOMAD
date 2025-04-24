@@ -298,3 +298,8 @@ UPGRADING-CURRENT.md
 # Removing package(-lock).json for h5p's ckeditor5
 /h5p/h5plib/v127/editor/ckeditor5/package-lock.json
 /h5p/h5plib/v127/editor/ckeditor5/package.json
+
+# MDR - CER-52 + CER-53
+# Removing phpinfo for SAST scan
+/h5p/h5plib/v127/joubel/editor/ckeditor5/package-lock.json
+/h5p/h5plib/v127/joubel/editor/ckeditor5/package.json
