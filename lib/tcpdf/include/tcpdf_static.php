@@ -1966,7 +1966,11 @@ class TCPDF_STATIC {
 				}
 				curl_setopt($crs, CURLOPT_CONNECTTIMEOUT, 5);
 				curl_setopt($crs, CURLOPT_TIMEOUT, 30);
-				curl_setopt($crs, CURLOPT_SSL_VERIFYPEER, false);
+				// BGWS Modification START
+				// Author - Kevin Crawford
+				// Jira ticket - CER-44
+				// curl_setopt($crs, CURLOPT_SSL_VERIFYPEER, false);
+				// BGWS Modification END								
 				curl_setopt($crs, CURLOPT_SSL_VERIFYHOST, false);
 				curl_setopt($crs, CURLOPT_USERAGENT, 'tc-lib-file');
 				curl_setopt($crs, CURLOPT_MAXREDIRS, 5);
