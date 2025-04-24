@@ -1668,11 +1668,7 @@ $string['personalprofile'] = 'Personal profile';
 $string['phone'] = 'Phone';
 $string['phone1'] = 'Phone';
 $string['phone2'] = 'Mobile phone';
-// BGWS Modification START
-// Author - Mike Robb
-// Jira ticket - CER-35
-// $string['phpinfo'] = 'PHP info';
-// BGWS Modification END
+$string['phpinfo'] = 'PHP info';
 $string['picture'] = 'Picture';
 $string['pictureof'] = 'Picture of {$a}';
 $string['pictureofuser'] = 'User picture';

@@ -183,16 +183,12 @@ $overlay-preview-bg: rgba($white, .8) !default;
 $course-cat-without-actions-color: #333 !default;
 $course-listing-color:             #a1a1a8 !default;
 
-// BGWS Modification START
-// Author - Mike Robb
-// Jira ticket - CER-35
-// // Debug
-// $phpinfo-color:        $black !default;
-// $phpinfo-bg:           #ccc !default;
-// $phpinfo-border-color: $black !default;
-// $phpinfo-e-bg:         #ccf !default;
-// $phpinfo-h-bg:         #99c !default;
-// BGWS Modification END
+// Debug
+$phpinfo-color:        $black !default;
+$phpinfo-bg:           #ccc !default;
+$phpinfo-border-color: $black !default;
+$phpinfo-e-bg:         #ccf !default;
+$phpinfo-h-bg:         #99c !default;
 
 
 // Filemanager
