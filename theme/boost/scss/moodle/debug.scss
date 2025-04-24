@@ -76,6 +76,10 @@ body.behat-site {
     }
 }
 
+/*
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-35
 .phpinfo table,
 .phpinfo th,
 .phpinfo h2 {
@@ -101,6 +105,7 @@ body.behat-site {
     background-color: $phpinfo-h-bg;
     font-weight: bold;
 }
+// BGWS Modification END */
 
 // PHP debug messages.
 

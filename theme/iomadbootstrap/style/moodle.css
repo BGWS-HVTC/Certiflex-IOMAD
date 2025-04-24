@@ -36549,6 +36549,10 @@ body.behat-site.path-grade-report-grader .gradeparent tr.heading {
   top: auto;
 }
 
+/*
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-35
 .phpinfo table,
 .phpinfo th,
 .phpinfo h2 {
@@ -36574,6 +36578,7 @@ body.behat-site.path-grade-report-grader .gradeparent tr.heading {
   background-color: #99c;
   font-weight: bold;
 }
+// BGWS Modification END */
 
 body > .debuggingmessage {
   margin-top: 50px;

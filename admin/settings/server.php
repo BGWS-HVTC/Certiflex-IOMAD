@@ -291,9 +291,13 @@ if ($hassiteconfig) {
     $ADMIN->add('server', new admin_externalpage('environment', new lang_string('environment', 'admin'),
         "{$CFG->wwwroot}/{$CFG->admin}/environment.php"));
 
-    // PHP info.
-    $ADMIN->add('server', new admin_externalpage('phpinfo', new lang_string('phpinfo'),
-        "{$CFG->wwwroot}/{$CFG->admin}/phpinfo.php"));
+    // BGWS Modification START
+    // Author - Mike Robb
+    // Jira ticket - CER-35  
+    // // PHP info.
+    // $ADMIN->add('server', new admin_externalpage('phpinfo', new lang_string('phpinfo'),
+    //     "{$CFG->wwwroot}/{$CFG->admin}/phpinfo.php"));
+    // BGWS Modification END
 
     // Test outgoing mail configuration (hidden, accessed via direct link from the settings page).
     $ADMIN->add('server', new admin_externalpage('testoutgoingmailconf', new lang_string('testoutgoingmailconf', 'admin'),

@@ -289,3 +289,7 @@ UPGRADING-CURRENT.md
     /lib/google
 ### ADOdb https://docs.moodle.org/dev/ADOdb
     /lib/adodb
+
+# MDR - CER-35
+# Removing phpinfo for SAST scan
+/admin/phpinfo.php
