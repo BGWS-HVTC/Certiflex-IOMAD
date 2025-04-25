@@ -910,7 +910,12 @@ M.mod_scorm.connectPrereqCallback = {
                 pagecontent = document.getElementById("scormpage");
             }
             el_new_tree.setAttribute('id','scormtree123');
-            el_new_tree.innerHTML = o.responseText;
+            // BGWS Modification START
+            // Author - Grant Jennings
+            // Jira ticket - CER-37
+            el_new_tree.textContent = o.responseText;
+            // BGWS Modification END
+            
             // Make sure it does not show.
             el_new_tree.style.display = 'none';
             pagecontent.appendChild(el_new_tree);

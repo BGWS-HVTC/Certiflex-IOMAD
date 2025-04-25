@@ -103,7 +103,11 @@ function addFileDataToMainArea(data, title) {
     var htmldata = makeList(data);
 
     var areatitle = document.createElement('h2');
-    areatitle.innerHTML = title;
+    // BGWS Modification START
+    // Author - Grant Jennings
+    // Jira ticket - CER-37
+    areatitle.textContent = title;
+    // BGWS Modification END    
     dataarea[0].appendChild(areatitle);
 
     var maincontentlist = document.createElement('div');
@@ -122,10 +126,10 @@ function makeList(jsondata) {
     for (var key in jsondata) {
         html += '<li>';
         if (typeof jsondata[key] == 'object') {
-            html += key;
+            html += Y.Escape.html(key);
             html += makeList(jsondata[key]);
         } else {
-            html += key + ': ' + jsondata[key];
+            html += Y.Escape.html(key + ': ' + jsondata[key]);
         }
         html += '</li>';
     }
