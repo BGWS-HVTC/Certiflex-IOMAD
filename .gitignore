@@ -303,3 +303,12 @@ UPGRADING-CURRENT.md
 # Removing phpinfo for SAST scan
 /h5p/h5plib/v127/joubel/editor/ckeditor5/package-lock.json
 /h5p/h5plib/v127/joubel/editor/ckeditor5/package.json
+
+# GSJ - CER-37
+# Removing src/debug JS for SAST scan
+/amd/src
+/yui/src
+**/src/*.js
+*-debug.js
+
+
