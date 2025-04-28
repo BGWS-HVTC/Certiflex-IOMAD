@@ -553,7 +553,11 @@ M.course_dndupload = {
         resel.a.appendChild(resel.icon);
 
         resel.namespan.className = 'instancename';
-        resel.namespan.innerHTML = name;
+        // BGWS Modification START
+        // Author - Grant Jennings
+        // Jira ticket - CER-37
+        resel.namespan.textContent = name;
+        // BGWS Modification END
         resel.a.appendChild(resel.namespan);
 
         resel.groupingspan.className = 'groupinglabel';
