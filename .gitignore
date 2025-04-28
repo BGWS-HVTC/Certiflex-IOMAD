@@ -305,10 +305,13 @@ UPGRADING-CURRENT.md
 /h5p/h5plib/v127/joubel/editor/ckeditor5/package.json
 
 # GSJ - CER-37
-# Removing src/debug JS for SAST scan
+# Removing AMD/YUI src files and YUI build debug files.
+# These files are used by Grunt to generate the min files in /amd/build or /yui/build that Moodle actually uses.
+# We are going to remove these for now as we only need the minified files.
 /amd/src
 /yui/src
-**/src/*.js
-*-debug.js
+**/amd/src/**/*.js
+**/yui/src/**/*.js
+**/yui/build/*-debug.js
 
 
