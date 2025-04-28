@@ -1865,7 +1865,14 @@ class graph {
           }
           break;
         default:
-          @eval($type); // user can create own brush script.
+          # BGWS Modification START
+          # Author - Anna Helton
+          # Jira ticket - CER-41 - unsafe `eval`      
+          # Moodle doesn't do a custom brush, setting default the same as the circle, which is the default value for brush_type (line 106)         
+          //@eval($type); // user can create own brush script.          
+          ImageArc($this->image, $x, $y, $size, $size, 0, 360, $this->colour[$colour]);
+          ImageFillToBorder($this->image, $x, $y, $this->colour[$colour], $this->colour[$colour]);
+          # BGWS Modification END
       }
     }
 
