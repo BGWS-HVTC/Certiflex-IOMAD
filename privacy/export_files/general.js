@@ -125,12 +125,16 @@ function makeList(jsondata) {
     var html = '<ul>';
     for (var key in jsondata) {
         html += '<li>';
+        // BGWS Modification START
+        // Author - Grant Jennings
+        // Jira ticket - CER-37
         if (typeof jsondata[key] == 'object') {
             html += Y.Escape.html(key);
             html += makeList(jsondata[key]);
         } else {
             html += Y.Escape.html(key + ': ' + jsondata[key]);
         }
+        // BGWS Modification END
         html += '</li>';
     }
     html += '</ul>';
