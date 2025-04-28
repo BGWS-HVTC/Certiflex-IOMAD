@@ -151,7 +151,11 @@ class behat_command {
 
         $currentcwd = getcwd();
         chdir($CFG->dirroot);
+        # BGWS Modification START
+        # Author - Tom Blankenship
+        # Jira ticket - CER-36
         exec(escapeshellcmd(self::get_behat_command()) . ' ' . escapeshellarg($options), $output, $code);
+        # BGWS Modification END
         chdir($currentcwd);
 
         return array($output, $code);
