@@ -292,9 +292,16 @@ class GenericTableMerger implements TableMerger
 
     protected function get_records_to_be_updated($data, $fieldName) {
         global $DB;
-        return $DB->get_records_sql("SELECT " . self::PRIMARY_KEY .
-            " FROM {" . $data['tableName'] . "} WHERE " .
-            $fieldName . " = '" . $data['fromid'] . "'");
+
+        # BGWS Modification START
+        # Author - Tom Blankenship
+        # Jira ticket - CER-38
+        $sql = "SELECT " . self::PRIMARY_KEY .
+               " FROM {" . $data['tableName'] . "} WHERE " .
+               $fieldName . " = :fromid";
+        $params = ['fromid' => $data['fromid']];
+        return $DB->get_records_sql($sql, $params);
+        # BGWS Modification END
     }
 
 }

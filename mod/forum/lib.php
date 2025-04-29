@@ -1424,72 +1424,11 @@ function forum_get_firstpost_from_discussion($discussionid) {
                               AND d.firstpost = p.id ", array($discussionid));
 }
 
-/**
- * Returns an array of counts of replies to each discussion
- *
- * @param   int     $forumid
- * @param   string  $forumsort
- * @param   int     $limit
- * @param   int     $page
- * @param   int     $perpage
- * @param   boolean $canseeprivatereplies   Whether the current user can see private replies.
- * @return  array
- */
-function forum_count_discussion_replies($forumid, $forumsort = "", $limit = -1, $page = -1, $perpage = 0,
-                                        $canseeprivatereplies = false) {
-    global $CFG, $DB, $USER;
-
-    if ($limit > 0) {
-        $limitfrom = 0;
-        $limitnum  = $limit;
-    } else if ($page != -1) {
-        $limitfrom = $page*$perpage;
-        $limitnum  = $perpage;
-    } else {
-        $limitfrom = 0;
-        $limitnum  = 0;
-    }
-
-    if ($forumsort == "") {
-        $orderby = "";
-        $groupby = "";
-
-    } else {
-        $orderby = "ORDER BY $forumsort";
-        $groupby = ", ".strtolower($forumsort);
-        $groupby = str_replace('desc', '', $groupby);
-        $groupby = str_replace('asc', '', $groupby);
-    }
-
-    $params = ['forumid' => $forumid];
-
-    if (!$canseeprivatereplies) {
-        $privatewhere = ' AND (p.privatereplyto = :currentuser1 OR p.userid = :currentuser2 OR p.privatereplyto = 0)';
-        $params['currentuser1'] = $USER->id;
-        $params['currentuser2'] = $USER->id;
-    } else {
-        $privatewhere = '';
-    }
-
-    if (($limitfrom == 0 and $limitnum == 0) or $forumsort == "") {
-        $sql = "SELECT p.discussion, COUNT(p.id) AS replies, MAX(p.id) AS lastpostid
-                  FROM {forum_posts} p
-                       JOIN {forum_discussions} d ON p.discussion = d.id
-                 WHERE p.parent > 0 AND d.forum = :forumid
-                       $privatewhere
-              GROUP BY p.discussion";
-        return $DB->get_records_sql($sql, $params);
-
-    } else {
-        $sql = "SELECT p.discussion, (COUNT(p.id) - 1) AS replies, MAX(p.id) AS lastpostid
-                  FROM {forum_posts} p
-                       JOIN {forum_discussions} d ON p.discussion = d.id
-                 WHERE d.forum = :forumid
-                       $privatewhere
-              GROUP BY p.discussion $groupby $orderby";
-        return $DB->get_records_sql($sql, $params, $limitfrom, $limitnum);
-    }
-}
+# BGWS Modification START
+# Author - Tom Blankenship
+# Jira ticket - CER-38
+# Removed unused function forum_count_discussion_replies
+# BGWS Modification END
 
 /**
  * @global object
