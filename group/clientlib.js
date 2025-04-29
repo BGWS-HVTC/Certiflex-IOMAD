@@ -49,7 +49,11 @@ function UpdatableGroupsCombo(wwwRoot, courseId) {
                         var optionEl = document.createElement("option");
                         optionEl.setAttribute("value", groups[i].id);
                         optionEl.title = groups[i].name;
-                        optionEl.innerHTML = groups[i].name;
+                        // BGWS Modification START
+                        // Author - Grant Jennings
+                        // Jira ticket - CER-37
+                        optionEl.textContent = groups[i].name;
+                        // BGWS Modification END
                         groupsComboEl.appendChild(optionEl);
                     }
                 }

@@ -112,8 +112,11 @@ function xhprof_generate_image_by_dot($dot_script, $type) {
   global $CFG;
   $cmd = (!empty($CFG->pathtodot) ? $CFG->pathtodot : 'dot') . ' -T' . $type;
   // End moodle modification.
-
-  $process = proc_open( $cmd, $descriptorspec, $pipes, sys_get_temp_dir(), array( 'PATH' => getenv( 'PATH' ) ) );
+  # BGWS Modification START
+  # Author - Tom Blankenship
+  # Jira ticket - CER-36
+  $process = proc_open(escapeshellarg($cmd), $descriptorspec, $pipes, sys_get_temp_dir(), array('PATH' => getenv('PATH')));
+  # BGWS Modification END
   if (is_resource($process)) {
     fwrite($pipes[0], $dot_script);
     fclose($pipes[0]);

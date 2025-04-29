@@ -44,7 +44,11 @@ H5P.Tooltip = (function () {
     tooltip.classList.add('h5p-tooltip');
     tooltip.id = tooltipId;
     tooltip.role = 'tooltip';
-    tooltip.innerHTML = options.text || triggeringElement.getAttribute('aria-label') || '';
+    // BGWS Modification START
+    // Author - Grant Jennings
+    // Jira ticket - CER-37
+    tooltip.textContent = options.text || triggeringElement.getAttribute('aria-label') || '';
+    // BGWS Modification END
     tooltip.setAttribute('aria-hidden', options.ariaHidden);
     tooltip.classList.add(...options.classes);
 
@@ -96,7 +100,11 @@ H5P.Tooltip = (function () {
     new MutationObserver(function (mutations) {
       const ariaLabel = mutations[0].target.getAttribute('aria-label');
       if (ariaLabel) {
-        tooltip.innerHTML = options.text || ariaLabel;
+        // BGWS Modification START
+        // Author - Grant Jennings
+        // Jira ticket - CER-37
+        tooltip.textContent = options.text || ariaLabel;
+        // BGWS Modification END
       }
     }).observe(triggeringElement, {
       attributes: true,
@@ -197,7 +205,11 @@ H5P.Tooltip = (function () {
      */
     this.setText = function (text) {
       options.text = text;
-      tooltip.innerHTML = options.text || triggeringElement.getAttribute('aria-label') || '';
+      // BGWS Modification START
+      // Author - Grant Jennings
+      // Jira ticket - CER-37
+      tooltip.textContent = options.text || triggeringElement.getAttribute('aria-label') || '';
+      // BGWS Modification END
     };
 
     /**
