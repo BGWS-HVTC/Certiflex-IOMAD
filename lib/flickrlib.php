@@ -249,7 +249,12 @@ class phpFlickr {
          * website provides, but isn't available in the API. I'm providing this service as long
          * as it doesn't flood my server with requests and crash it all the time.
          */
-        return unserialize(file_get_contents('http://phpflickr.com/geodata/?format=php&lat=' . $lat . '&lon=' . $lon));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-34
+        // Removing call to phpflickr for geo data
+        return new stdClass();
+        // BGWS Modification END
     }
 
     function auth($perms = "write", $remember_uri = true)
