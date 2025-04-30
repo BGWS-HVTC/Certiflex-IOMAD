@@ -1179,12 +1179,6 @@ abstract class moodle_database {
             }
         }
 
-        # BGWS Modification START
-        # Author - Tom Blankenship
-        # Jira ticket - CER-38
-        $this->validate_table_name($table);
-        # BGWS Modification END
-
         $structure = $this->fetch_columns($table);
 
         if ($usecache) {
