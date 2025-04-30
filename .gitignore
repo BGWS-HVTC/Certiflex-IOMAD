@@ -316,4 +316,10 @@ UPGRADING-CURRENT.md
 **/yui/src/**/*.js
 **/yui/build/*-debug.js
 
+# ANH - CER-41
+# Removing question types : calculated, calculatedmulti
+# These use `eval()` liberally with user input. Removing for SAST
+/question/type/calculated
+/question/type/calculatedmulti
+
 
