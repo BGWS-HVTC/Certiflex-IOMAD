@@ -296,6 +296,8 @@ UPGRADING-CURRENT.md
 
 # MDR - CER-47
 # Removing package(-lock).json for h5p's ckeditor5
+/h5p/h5plib/v127/joubel/editor/package-lock.json
+/h5p/h5plib/v127/joubel/editor/package.json
 /h5p/h5plib/v127/editor/ckeditor5/package-lock.json
 /h5p/h5plib/v127/editor/ckeditor5/package.json
 
