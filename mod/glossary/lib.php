@@ -986,25 +986,11 @@ function glossary_debug($debug,$text,$br=1) {
     }
 }
 
-/**
- *
- * @global object
- * @param int $glossaryid
- * @param string $entrylist
- * @param string $pivot
- * @return array
- */
-function glossary_get_entries($glossaryid, $entrylist, $pivot = "") {
-    global $DB;
-    if ($pivot) {
-       $pivot .= ",";
-    }
-
-    return $DB->get_records_sql("SELECT $pivot id,userid,concept,definition,format
-                                   FROM {glossary_entries}
-                                  WHERE glossaryid = ?
-                                        AND id IN ($entrylist)", array($glossaryid));
-}
+# BGWS Modification START
+# Author - Tom Blankenship
+# Jira ticket - CER-38
+# Remove unused glossary_get_entries function
+# BGWS Modification END
 
 /**
  * @global object

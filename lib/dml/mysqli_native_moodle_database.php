@@ -845,6 +845,12 @@ class mysqli_native_moodle_database extends moodle_database {
     protected function fetch_columns(string $table): array {
         $structure = array();
 
+        # BGWS Modification START
+        # Author - Tom Blankenship
+        # Jira ticket - CER-38
+        $this->validate_table_name($table);
+        # BGWS Modification END
+
         $sql = "SELECT column_name, data_type, character_maximum_length, numeric_precision,
                        numeric_scale, is_nullable, column_type, column_default, column_key, extra
                   FROM information_schema.columns

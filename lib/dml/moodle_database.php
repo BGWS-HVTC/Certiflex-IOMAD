@@ -3022,4 +3022,18 @@ abstract class moodle_database {
         }
         return "SELECT results.*, $fullcountvalue AS $fullcountcolumn FROM ($sql) results";
     }
+
+    /**
+     * Validates a table name to ensure it only contains valid characters.
+     *
+     * @param string $table The table name to validate.
+     * @throws coding_exception If the table name is invalid.
+     */
+    protected function validate_table_name($table)
+    {
+        if (!preg_match('/\{([a-z][a-z0-9_]*)\}/', $table)) {
+            throw new coding_exception('Invalid table name provided.');
+        }
+    }
+
 }
