@@ -3023,6 +3023,9 @@ abstract class moodle_database {
         return "SELECT results.*, $fullcountvalue AS $fullcountcolumn FROM ($sql) results";
     }
 
+    # BGWS Modification START
+    # Author - Tom Blankenship
+    # Jira ticket - CER-38
     /**
      * Validates a table name to ensure it only contains valid characters.
      *
@@ -3035,5 +3038,6 @@ abstract class moodle_database {
             throw new coding_exception('Invalid table name provided.');
         }
     }
+    # BGWS Modification END
 
 }

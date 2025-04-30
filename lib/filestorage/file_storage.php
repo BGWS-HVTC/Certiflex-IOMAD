@@ -863,7 +863,11 @@ class file_storage {
                            AND f.filepath = :filepath AND f.filename <> '.'
                            $orderby";
 
+            # BGWS Modification START
+            # Author - Tom Blankenship
+            # Jira ticket - CER-38
             list($sql, $params, $type) = $DB->fix_sql_params($sql, $params);
+            # BGWS Modification END
 
             $filerecords = $DB->get_records_sql($sql, $params);
             foreach ($filerecords as $filerecord) {
