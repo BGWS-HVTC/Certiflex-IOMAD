@@ -863,8 +863,6 @@ class file_storage {
                            AND f.filepath = :filepath AND f.filename <> '.'
                            $orderby";
 
-            list($sql, $params, $type) = $DB->fix_sql_params($sql, $params);
-
             $filerecords = $DB->get_records_sql($sql, $params);
             foreach ($filerecords as $filerecord) {
                 $result[$filerecord->pathnamehash] = $this->get_file_instance($filerecord);
