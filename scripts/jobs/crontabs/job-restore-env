@@ -1,0 +1,1 @@
+0 0 1 * * root /var/www/totara-latest/scripts/jobs/restore_from_env.sh >> /var/log/cron.log 2>&1

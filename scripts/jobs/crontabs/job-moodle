@@ -1,0 +1,2 @@
+* * * * * apache /usr/bin/php /var/www/moodle-latest/web/admin/cli/cron.php >> /var/log/cron.log 2>&1
+

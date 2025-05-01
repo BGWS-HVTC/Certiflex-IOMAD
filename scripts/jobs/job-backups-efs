@@ -1,0 +1,1 @@
+0 4 * * * apache /bin/bash /var/www/totara-latest/scripts/jobs/sync_efs_to_s3.sh >> /var/log/cron.log 2>&1
