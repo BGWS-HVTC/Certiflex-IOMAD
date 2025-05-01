@@ -316,4 +316,7 @@ UPGRADING-CURRENT.md
 **/yui/src/**/*.js
 **/yui/build/*-debug.js
 
-
+# MDR - CER-34
+# Removing Flickr client and class
+/lib/flickrlib.php
+/lib/flickrclient.php
