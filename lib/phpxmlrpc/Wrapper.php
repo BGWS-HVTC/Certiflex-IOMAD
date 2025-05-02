@@ -1099,109 +1099,115 @@ class Wrapper
      * @todo optimization - move the generated Encoder instance to be a property of the created class, instead of creating
      *                      it on every generated method invocation
      */
-    public function wrapXmlrpcServer($client, $extraOptions = array())
-    {
-        $methodFilter = isset($extraOptions['method_filter']) ? $extraOptions['method_filter'] : '';
-        $timeout = isset($extraOptions['timeout']) ? (int)$extraOptions['timeout'] : 0;
-        $protocol = isset($extraOptions['protocol']) ? $extraOptions['protocol'] : '';
-        $newClassName = isset($extraOptions['new_class_name']) ? $extraOptions['new_class_name'] : '';
-        $encodeNulls = isset($extraOptions['encode_nulls']) ? (bool)$extraOptions['encode_nulls'] : false;
-        $encodePhpObjects = isset($extraOptions['encode_php_objs']) ? (bool)$extraOptions['encode_php_objs'] : false;
-        $decodePhpObjects = isset($extraOptions['decode_php_objs']) ? (bool)$extraOptions['decode_php_objs'] : false;
-        $verbatimClientCopy = isset($extraOptions['simple_client_copy']) ? !($extraOptions['simple_client_copy']) : true;
-        $throwOnFault = isset($extraOptions['throw_on_fault']) ? (bool)$extraOptions['throw_on_fault'] : false;
-        $buildIt = isset($extraOptions['return_source']) ? !($extraOptions['return_source']) : true;
-        $prefix = isset($extraOptions['prefix']) ? $extraOptions['prefix'] : 'xmlrpc';
+    # BGWS Modification START
+    # Author - Anna Helton
+    # Jira ticket - CER-41 
+    # We are going to remove this entire function as it's not being used and it is VERY UNSAFELY generate a class using eval.
+    // public function wrapXmlrpcServer($client, $extraOptions = array())
+    // {
+    //     $methodFilter = isset($extraOptions['method_filter']) ? $extraOptions['method_filter'] : '';
+    //     $timeout = isset($extraOptions['timeout']) ? (int)$extraOptions['timeout'] : 0;
+    //     $protocol = isset($extraOptions['protocol']) ? $extraOptions['protocol'] : '';
+    //     $newClassName = isset($extraOptions['new_class_name']) ? $extraOptions['new_class_name'] : '';
+    //     $encodeNulls = isset($extraOptions['encode_nulls']) ? (bool)$extraOptions['encode_nulls'] : false;
+    //     $encodePhpObjects = isset($extraOptions['encode_php_objs']) ? (bool)$extraOptions['encode_php_objs'] : false;
+    //     $decodePhpObjects = isset($extraOptions['decode_php_objs']) ? (bool)$extraOptions['decode_php_objs'] : false;
+    //     $verbatimClientCopy = isset($extraOptions['simple_client_copy']) ? !($extraOptions['simple_client_copy']) : true;
+    //     $throwOnFault = isset($extraOptions['throw_on_fault']) ? (bool)$extraOptions['throw_on_fault'] : false;
+    //     $buildIt = isset($extraOptions['return_source']) ? !($extraOptions['return_source']) : true;
+    //     $prefix = isset($extraOptions['prefix']) ? $extraOptions['prefix'] : 'xmlrpc';
 
-        $reqClass = static::$namespace . 'Request';
-        $decoderClass = static::$namespace . 'Encoder';
+    //     $reqClass = static::$namespace . 'Request';
+    //     $decoderClass = static::$namespace . 'Encoder';
 
-        // retrieve the list of methods
-        $req = new $reqClass('system.listMethods');
-        /// @todo move setting of timeout, protocol to outside the send() call
-        $response = $client->send($req, $timeout, $protocol);
-        if ($response->faultCode()) {
-            $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not retrieve method list from remote server');
+    //     // retrieve the list of methods
+    //     $req = new $reqClass('system.listMethods');
+    //     /// @todo move setting of timeout, protocol to outside the send() call
+    //     $response = $client->send($req, $timeout, $protocol);
+    //     if ($response->faultCode()) {
+    //         $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not retrieve method list from remote server');
 
-            return false;
-        }
-        $mList = $response->value();
-        /// @todo what about return_type = xml?
-        if ($client->getOption(Client::OPT_RETURN_TYPE) != 'phpvals') {
-            $decoder = new $decoderClass();
-            $mList = $decoder->decode($mList);
-        }
-        if (!is_array($mList) || !count($mList)) {
-            $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not retrieve meaningful method list from remote server');
+    //         return false;
+    //     }
+    //     $mList = $response->value();
+    //     /// @todo what about return_type = xml?
+    //     if ($client->getOption(Client::OPT_RETURN_TYPE) != 'phpvals') {
+    //         $decoder = new $decoderClass();
+    //         $mList = $decoder->decode($mList);
+    //     }
+    //     if (!is_array($mList) || !count($mList)) {
+    //         $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not retrieve meaningful method list from remote server');
 
-            return false;
-        }
+    //         return false;
+    //     }
 
-        // pick a suitable name for the new function, avoiding collisions
-        if ($newClassName != '') {
-            $xmlrpcClassName = $newClassName;
-        } else {
-            /// @todo direct access to $client->server is now deprecated
-            $xmlrpcClassName = $prefix . '_' . preg_replace(array('/\./', '/[^a-zA-Z0-9_\x7f-\xff]/'), array('_', ''),
-                $client->server) . '_client';
-        }
-        while ($buildIt && class_exists($xmlrpcClassName)) {
-            $xmlrpcClassName .= 'x';
-        }
+    //     // pick a suitable name for the new function, avoiding collisions
+    //     if ($newClassName != '') {
+    //         $xmlrpcClassName = $newClassName;
+    //     } else {
+    //         /// @todo direct access to $client->server is now deprecated
+    //         $xmlrpcClassName = $prefix . '_' . preg_replace(array('/\./', '/[^a-zA-Z0-9_\x7f-\xff]/'), array('_', ''),
+    //             $client->server) . '_client';
+    //     }
+    //     while ($buildIt && class_exists($xmlrpcClassName)) {
+    //         $xmlrpcClassName .= 'x';
+    //     }
 
-        $source = "class $xmlrpcClassName\n{\n  public \$client;\n\n";
-        $source .= "  function __construct()\n  {\n";
-        $source .= '    ' . str_replace("\n", "\n    ", $this->buildClientWrapperCode($client, $verbatimClientCopy, $prefix, static::$namespace));
-        $source .= "\$this->client = \$client;\n  }\n\n";
-        $opts = array(
-            'return_source' => true,
-            'simple_client_copy' => 2, // do not produce code to copy the client object
-            'timeout' => $timeout,
-            'protocol' => $protocol,
-            'encode_nulls' => $encodeNulls,
-            'encode_php_objs' => $encodePhpObjects,
-            'decode_php_objs' => $decodePhpObjects,
-            'throw_on_fault' => $throwOnFault,
-            'prefix' => $prefix,
-        );
+    //     $source = "class $xmlrpcClassName\n{\n  public \$client;\n\n";
+    //     $source .= "  function __construct()\n  {\n";
+    //     $source .= '    ' . str_replace("\n", "\n    ", $this->buildClientWrapperCode($client, $verbatimClientCopy, $prefix, static::$namespace));
+    //     $source .= "\$this->client = \$client;\n  }\n\n";
+    //     $opts = array(
+    //         'return_source' => true,
+    //         'simple_client_copy' => 2, // do not produce code to copy the client object
+    //         'timeout' => $timeout,
+    //         'protocol' => $protocol,
+    //         'encode_nulls' => $encodeNulls,
+    //         'encode_php_objs' => $encodePhpObjects,
+    //         'decode_php_objs' => $decodePhpObjects,
+    //         'throw_on_fault' => $throwOnFault,
+    //         'prefix' => $prefix,
+    //     );
 
-        /// @todo build phpdoc for class definition, too
-        foreach ($mList as $mName) {
-            if ($methodFilter == '' || preg_match($methodFilter, $mName)) {
-                /// @todo this will fail if server exposes 2 methods called f.e. do.something and do_something
-                $opts['new_function_name'] = preg_replace(array('/\./', '/[^a-zA-Z0-9_\x7f-\xff]/'),
-                    array('_', ''), $mName);
-                $methodWrap = $this->wrapXmlrpcMethod($client, $mName, $opts);
-                if ($methodWrap) {
-                    if ($buildIt) {
-                        $source .= $methodWrap['source'] . "\n";
+    //     /// @todo build phpdoc for class definition, too
+    //     foreach ($mList as $mName) {
+    //         if ($methodFilter == '' || preg_match($methodFilter, $mName)) {
+    //             /// @todo this will fail if server exposes 2 methods called f.e. do.something and do_something
+    //             $opts['new_function_name'] = preg_replace(array('/\./', '/[^a-zA-Z0-9_\x7f-\xff]/'),
+    //                 array('_', ''), $mName);
+    //             $methodWrap = $this->wrapXmlrpcMethod($client, $mName, $opts);
+    //             if ($methodWrap) {
+    //                 if ($buildIt) {
+    //                     $source .= $methodWrap['source'] . "\n";
 
-                    } else {
-                        $source .= '  ' . str_replace("\n", "\n  ", $methodWrap['docstring']);
-                        $source .= str_replace("\n", "\n  ", $methodWrap['source']). "\n";
-                    }
+    //                 } else {
+    //                     $source .= '  ' . str_replace("\n", "\n  ", $methodWrap['docstring']);
+    //                     $source .= str_replace("\n", "\n  ", $methodWrap['source']). "\n";
+    //                 }
 
-                } else {
-                    $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': will not create class method to wrap remote method ' . $mName);
-                }
-            }
-        }
-        $source .= "}\n";
-        if ($buildIt) {
-            $allOK = 0;
-            eval($source . '$allOK=1;');
-            if ($allOK) {
-                return $xmlrpcClassName;
-            } else {
-                /// @todo direct access to $client->server is now deprecated
-                $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not create class ' . $xmlrpcClassName .
-                    ' to wrap remote server ' . $client->server);
-                return false;
-            }
-        } else {
-            return array('class' => $xmlrpcClassName, 'code' => $source, 'docstring' => '');
-        }
-    }
+    //             } else {
+    //                 $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': will not create class method to wrap remote method ' . $mName);
+    //             }
+    //         }
+    //     }
+    //     $source .= "}\n";
+    //     if ($buildIt) {
+    //         $allOK = 0;
+    //         eval($source . '$allOK=1;');
+    //         if ($allOK) {
+    //             return $xmlrpcClassName;
+    //         } else {
+    //             /// @todo direct access to $client->server is now deprecated
+    //             $this->getLogger()->error('XML-RPC: ' . __METHOD__ . ': could not create class ' . $xmlrpcClassName .
+    //                 ' to wrap remote server ' . $client->server);
+    //             return false;
+    //         }
+    //     } else {
+    //         return array('class' => $xmlrpcClassName, 'code' => $source, 'docstring' => '');
+    //     }
+    // }
+    # BGWS Modification END
+   
 
     /**
      * Given necessary info, generate php code that will build a client object just like the given one.
