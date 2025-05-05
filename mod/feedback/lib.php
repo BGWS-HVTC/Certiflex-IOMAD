@@ -1044,67 +1044,11 @@ function feedback_count_complete_users($cm, $group = false) {
 
 }
 
-/**
- * get users which have completed a feedback
- *
- * @global object
- * @uses CONTEXT_MODULE
- * @uses FEEDBACK_ANONYMOUS_NO
- * @param object $cm
- * @param int $group single groupid
- * @param string $where a sql where condition (must end with " AND ")
- * @param array parameters used in $where
- * @param string $sort a table field
- * @param int $startpage
- * @param int $pagecount
- * @return object the userrecords
- */
-function feedback_get_complete_users($cm,
-                                     $group = false,
-                                     $where = '',
-                                     ?array $params = null,
-                                     $sort = '',
-                                     $startpage = false,
-                                     $pagecount = false) {
-
-    global $DB;
-
-    $context = context_module::instance($cm->id);
-
-    $params = (array)$params;
-
-    $params['anon'] = FEEDBACK_ANONYMOUS_NO;
-    $params['instance'] = $cm->instance;
-
-    $fromgroup = '';
-    $wheregroup = '';
-    if ($group) {
-        $fromgroup = ', {groups_members} g';
-        $wheregroup = ' AND g.groupid = :group AND g.userid = c.userid';
-        $params['group'] = $group;
-    }
-
-    if ($sort) {
-        $sortsql = ' ORDER BY '.$sort;
-    } else {
-        $sortsql = '';
-    }
-
-    $userfieldsapi = \core_user\fields::for_userpic();
-    $ufields = $userfieldsapi->get_sql('u', false, '', '', false)->selects;
-    $sql = 'SELECT DISTINCT '.$ufields.', c.timemodified as completed_timemodified
-            FROM {user} u, {feedback_completed} c '.$fromgroup.'
-            WHERE '.$where.' anonymous_response = :anon
-                AND u.id = c.userid
-                AND c.feedback = :instance
-              '.$wheregroup.$sortsql;
-
-    if ($startpage === false OR $pagecount === false) {
-        $startpage = false;
-        $pagecount = false;
-    }
-    return $DB->get_records_sql($sql, $params, $startpage, $pagecount);
-}
+# BGWS Modification START
+# Author - Tom Blankenship
+# Jira ticket - CER-38
+# Removed unused feedback_get_complete_users function
+# BGWS Modification END
 
 /**
  * get users which have the viewreports-capability
