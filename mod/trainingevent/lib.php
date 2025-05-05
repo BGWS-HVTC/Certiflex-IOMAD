@@ -357,16 +357,30 @@ function trainingevent_event_clashes($event, $userid, $ignoreeventid = 0) {
 
     // Check if either the current event start or end date falls between an event
     // the user is already booked on.
-    if ($DB->get_records_sql("SELECT cc.id FROM {trainingevent} cc
-                              RIGHT JOIN {trainingevent_users} ccu
-                              ON (ccu.trainingeventid = cc.id AND ccu.userid = :userid AND waitlisted=0)
-                              WHERE ( cc.startdatetime < ".$event->startdatetime."
-                              AND cc.enddatetime > ".$event->startdatetime.")
-                              OR ( cc.startdatetime < ".$event->enddatetime."
-                              AND cc.enddatetime > ".$event->enddatetime.")
-                              $ignoresql",
-                             ['userid' => $userid,
-                              'ignoreeventid' => $ignoreeventid])) {
+    # BGWS Modification START
+    # Author - Tom Blankenship
+    # Jira ticket - CER-38
+    if (
+        $DB->get_records_sql(
+            "SELECT cc.id FROM {trainingevent} cc
+                            RIGHT JOIN {trainingevent_users} ccu
+                            ON (ccu.trainingeventid = cc.id AND ccu.userid = :userid AND waitlisted=0)
+                            WHERE ( cc.startdatetime < :startdatetime1
+                            AND cc.enddatetime > :startdatetime2)
+                            OR ( cc.startdatetime < :enddatetime1
+                            AND cc.enddatetime > :enddatetime2)
+                            $ignoresql",
+            [
+                'userid' => $userid,
+                'startdatetime1' => $event->startdatetime,
+                'startdatetime2' => $event->startdatetime,
+                'enddatetime1' => $event->enddatetime,
+                'enddatetime2' => $event->enddatetime,
+                'ignoreeventid' => $ignoreeventid
+            ]
+        )
+    ) {    
+    # BGWS Modification END
         $return = true;
 
     } else if ($event->isexclusive &&

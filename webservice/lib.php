@@ -543,6 +543,11 @@ class webservice {
         return $functions;
     }
 
+    # BGWS Modification START
+    # Author - Tom Blankenship
+    # Jira ticket - CER-38
+    # Remove unused get_external_functions_by_enabled_services function
+    # BGWS Modification END
     /**
      * Get the functions of a service list (by shortname). It can return only enabled functions if required.
      *

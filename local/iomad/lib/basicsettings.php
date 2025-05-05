@@ -60,7 +60,11 @@ if (is_null($ADMIN->locate('CompetencyAdmin'))) {
              get_string('competencymanagement', 'block_iomad_company_admin')));
 }
 
-if (is_null($ADMIN->locate('ECommerceAdmin'))) {
-    $ADMIN->add( 'iomad', new admin_category( 'ECommerceAdmin',
-             get_string('blocktitle', 'block_iomad_commerce')));
-}
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-34
+// if (is_null($ADMIN->locate('ECommerceAdmin'))) {
+//     $ADMIN->add( 'iomad', new admin_category( 'ECommerceAdmin',
+//              get_string('blocktitle', 'block_iomad_commerce')));
+// }
+// BGWS Modification END

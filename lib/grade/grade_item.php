@@ -770,22 +770,11 @@ class grade_item extends grade_object {
         }
     }
 
-    /**
-     * Returns the number of grades that are hidden
-     *
-     * @param string $groupsql SQL to limit the query by group
-     * @param array $params SQL params for $groupsql
-     * @param string $groupwheresql Where conditions for $groupsql
-     * @return int The number of hidden grades
-     */
-    public function has_hidden_grades($groupsql="", ?array $params=null, $groupwheresql="") {
-        global $DB;
-        $params = (array)$params;
-        $params['itemid'] = $this->id;
-
-        return $DB->get_field_sql("SELECT COUNT(*) FROM {grade_grades} g LEFT JOIN "
-                            ."{user} u ON g.userid = u.id $groupsql WHERE itemid = :itemid AND hidden = 1 $groupwheresql", $params);
-    }
+    # BGWS Modification START
+    # Author - Tom Blankenship
+    # Jira ticket - CER-38
+    # Removed unused has_hidden_grades function
+    # BGWS Modification END
 
     /**
      * Mark regrading as finished successfully. This will also be called when subsequent regrading will not change any grades.

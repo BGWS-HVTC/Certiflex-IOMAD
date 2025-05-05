@@ -181,7 +181,12 @@ abstract class backup_controller_dbops extends backup_dbops {
     public static function decode_backup_temp_info($info) {
         // We encode all data except null.
         if ($info != null) {
-            return unserialize(gzuncompress(base64_decode($info)));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            // Updating the encode/decode to use json_encode and decode
+            return json_decode(gzuncompress(base64_decode($info)));
+            // BGWS Modification END
         }
         return $info;
     }
@@ -197,7 +202,12 @@ abstract class backup_controller_dbops extends backup_dbops {
         if ($info != null) {
             // We compress if possible. It reduces db, network and memory storage. The saving is greater than CPU compression cost.
             // Compression level 1 is chosen has it produces good compression with the smallest possible overhead, see MDL-40618.
-            return base64_encode(gzcompress(serialize($info), 1));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            // Updating the encode/decode to use json_encode and decode
+            return base64_encode(gzcompress(json_encode($info), 1));
+            // BGWS Modification END
         }
         return $info;
     }
