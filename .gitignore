@@ -321,5 +321,6 @@ UPGRADING-CURRENT.md
 # These use `eval()` liberally with user input. Removing for SAST
 /question/type/calculated
 /question/type/calculatedmulti
+/question/type/calculatesimple
 
 
