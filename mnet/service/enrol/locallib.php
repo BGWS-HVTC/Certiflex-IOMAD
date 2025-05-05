@@ -169,7 +169,11 @@ class mnetservice_enrol {
         require_once $CFG->dirroot.'/mnet/xmlrpc/client.php';
         $peer = new mnet_peer();
         if (!$peer->set_id($mnethostid)) {
-            return serialize(array('unknown mnet peer'));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode(array('unknown mnet peer'));
+            // BGWS Modification END
         }
 
         $request = new mnet_xmlrpc_client();
@@ -234,7 +238,12 @@ class mnetservice_enrol {
             return $list;
 
         } else {
-            return serialize($request->error);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            // changing serialize to json_encode
+            return json_encode($request->error);
+            // BGWS Modification END
         }
     }
 
@@ -259,12 +268,20 @@ class mnetservice_enrol {
         require_once $CFG->dirroot.'/mnet/xmlrpc/client.php';
 
         if (!$DB->record_exists('mnetservice_enrol_courses', array('hostid'=>$mnethostid, 'remoteid'=>$remotecourseid))) {
-            return serialize(array('course not available for remote enrolments'));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode(array('course not available for remote enrolments'));
+            // BGWS Modification END
         }
 
         $peer = new mnet_peer();
         if (!$peer->set_id($mnethostid)) {
-            return serialize(array('unknown mnet peer'));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode(array('unknown mnet peer'));
+            // BGWS Modification END
         }
 
         $request = new mnet_xmlrpc_client();
@@ -280,7 +297,12 @@ class mnetservice_enrol {
             foreach ($response as $unused => $remote) {
                 if (!isset($remote['username'])) {
                     // see MDL-19219
-                    return serialize(array('remote host running old version of mnet server - does not return username attribute'));
+
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-34
+                    return json_encode(array('remote host running old version of mnet server - does not return username attribute'));
+                    // BGWS Modification END
                 }
                 if ($remote['username'] == 'guest') { // we can not use $CFG->siteguest here
                     // do not try nasty things you bastard!
@@ -350,7 +372,11 @@ class mnetservice_enrol {
             return true;
 
         } else {
-            return serialize($request->error);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode($request->error);
+            // BGWS Modification END
         }
     }
 
@@ -390,11 +416,19 @@ class mnetservice_enrol {
                 return true;
 
             } else {
-                return serialize(array('invalid response: '.print_r($request->response, true)));
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                return json_encode(array('invalid response: '.print_r($request->response, true)));
+                // BGWS Modification END
             }
 
         } else {
-            return serialize($request->error);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode($request->error);
+            // BGWS Modification END
         }
     }
 
@@ -428,11 +462,19 @@ class mnetservice_enrol {
                 return true;
 
             } else {
-                return serialize(array('invalid response: '.print_r($request->response, true)));
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                return json_encode(array('invalid response: '.print_r($request->response, true)));
+                // BGWS Modification END
             }
 
         } else {
-            return serialize($request->error);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            return json_encode($request->error);
+            // BGWS Modification END
         }
     }
 
@@ -445,7 +487,12 @@ class mnetservice_enrol {
      * @return string
      */
     public function format_error_message($errormsg) {
-        $errors = unserialize($errormsg);
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-34
+        // Changing unserialize to json_decode
+        $errors = json_decode($errormsg);
+        // BGWS Modification END
         $output = 'mnet_xmlrpc_client request returned errors:'."\n";
         foreach ($errors as $error) {
             $output .= "$error\n";

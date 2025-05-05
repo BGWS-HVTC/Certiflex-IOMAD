@@ -393,7 +393,11 @@ EOF
         }
         foreach ($data as $key => $value) {
             if ($key !== 'submit') {
-                $persistant->tool_customlang_filter[$key] = serialize($value);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                $persistant->tool_customlang_filter[$key] = json_encode($value);
+                // BGWS Modification END
             }
         }
     }
@@ -409,7 +413,11 @@ EOF
         $data = new stdclass();
         if (isset($persistant->tool_customlang_filter)) {
             foreach ($persistant->tool_customlang_filter as $key => $value) {
-                $data->{$key} = unserialize($value);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                $data->{$key} = json_decode($value);
+                // BGWS Modification END
             }
         }
         return $data;

@@ -299,7 +299,11 @@ class EmailTemplate {
             $email->due = $this->due;
             $email->companyid = $this->company->id;
             if (isset($email->headers)) {
-                $email->customheaders = unserialize($email->headers);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                $email->customheaders = json_decode($email->headers, true);
+                // BGWS Modification END
             } else {
                 $email->customheaders = array();
             }
@@ -420,7 +424,11 @@ class EmailTemplate {
                 $this->template->name = $email->templatename;
             }
             $email->customheaders['template'] = $this->template;
-            $email->headers = serialize($email->customheaders);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            $email->headers = json_encode($email->customheaders);
+            // BGWS Modification END
 
             return $DB->insert_record('email', $email);
         } else {
@@ -454,7 +462,11 @@ class EmailTemplate {
             }
 
             if (!empty($email->headers)) {
-                $supportuser->customheaders = unserialize($email->headers);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                $supportuser->customheaders = json_decode($email->headers, true);
+                // BGWS Modification END
             } else {
                 $supportuser->customheaders = '';
             }
@@ -643,7 +655,11 @@ class EmailTemplate {
         if (isset($this->emailfrom)) {
             $supportuser = self::get_user($this->emailfrom);
             if (isset($email->headers)) {
-                $supportuser->customheaders = unserialize($email->headers);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-34
+                $supportuser->customheaders = json_decode($email->headers, true);
+                // BGWS Modification END
             } else {
                 $supportuser->customheaders = array();
             }
@@ -656,7 +672,11 @@ class EmailTemplate {
             if (isset($this->emailfromother) && validate_email($this->emailfromother)) {
                 $supportuser == core_user::get_support_user();
                 if (isset($email->headers)) {
-                    $supportuser->customheaders = unserialize($email->headers);
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-34
+                    $supportuser->customheaders = json_decode($email->headers, true);
+                    // BGWS Modification END
                 } else {
                     $supportuser->customheaders = array();
                 }
@@ -669,14 +689,22 @@ class EmailTemplate {
             } else if (isset($this->sender->id)) {
                 $supportuser = self::get_user($this->sender->id);
                 if (isset($email->headers)) {
-                    $supportuser->customheaders = unserialize($email->headers);
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-34
+                    $supportuser->customheaders = json_decode($email->headers, true);
+                    // BGWS Modification END
                 } else {
                     $supportuser->customheaders = array();
                 }
             } else {
                 $supportuser = self::get_user(self::get_sender($this->user->id));
                 if (isset($email->headers)) {
-                    $supportuser->customheaders = unserialize($email->headers);
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-34
+                    $supportuser->customheaders = json_decode($email->headers, true);
+                    // BGWS Modification END
                 } else {
                     $supportuser->customheaders = array();
                 }
@@ -777,7 +805,11 @@ class EmailTemplate {
         }
 
         if (isset($email->headers)) {
-            $supportuser->customheaders = unserialize($email->headers);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-34
+            $supportuser->customheaders = json_decode($email->headers, true);
+            // BGWS Modification END
         } else {
             $supportuser->customheaders = '';
         }

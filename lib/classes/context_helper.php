@@ -67,24 +67,30 @@ abstract class context_helper extends context {
             CONTEXT_COMPANY => \core\context\company::class,
         );
 
-        if (empty($CFG->custom_context_classes)) {
-            return;
-        }
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-34
+        // Removing custom_context_classes to avoid serailziation since we are not using it now
+        return;
+        // if (empty($CFG->custom_context_classes)) {
+        //     return;
+        // }
+        
+        // $levels = $CFG->custom_context_classes;
+        // if (!is_array($levels)) {
+        //     $levels = @unserialize($levels);
+        // }
+        // if (!is_array($levels)) {
+        //     debugging('Invalid $CFG->custom_context_classes detected, value ignored.', DEBUG_DEVELOPER);
+        //     return;
+        // }
 
-        $levels = $CFG->custom_context_classes;
-        if (!is_array($levels)) {
-            $levels = @unserialize($levels);
-        }
-        if (!is_array($levels)) {
-            debugging('Invalid $CFG->custom_context_classes detected, value ignored.', DEBUG_DEVELOPER);
-            return;
-        }
-
-        // Unsupported custom levels, use with care!!!
-        foreach ($levels as $level => $classname) {
-            self::$alllevels[$level] = $classname;
-        }
-        ksort(self::$alllevels);
+        // // Unsupported custom levels, use with care!!!
+        // foreach ($levels as $level => $classname) {
+        //     self::$alllevels[$level] = $classname;
+        // }
+        // ksort(self::$alllevels);
+        // BGWS Modification END
     }
 
     /**

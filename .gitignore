@@ -322,4 +322,7 @@ UPGRADING-CURRENT.md
 /question/type/calculated
 /question/type/calculatedmulti
 
-
+# MDR - CER-34
+# Removing Flickr client and class
+/lib/flickrlib.php
+/lib/flickrclient.php
