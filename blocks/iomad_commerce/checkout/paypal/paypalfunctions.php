@@ -337,8 +337,12 @@ function hash_call($methodname, $nvpstr) {
     curl_setopt($ch, CURLOPT_URL, $api_endpoint);
     curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
-    // Turning off the server and peer verification(TrustManager Concept).
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // SSL certificate verification turned off during requests
+    // BGWS Modification START
+    // Author - Kevin Crawford
+    // Jira ticket - CER-74
+    // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // BGWS Modification END
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
