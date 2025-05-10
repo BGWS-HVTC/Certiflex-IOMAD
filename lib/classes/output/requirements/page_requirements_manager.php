@@ -1741,6 +1741,12 @@ EOF;
         // Link our main JS file, all core stuff should be there.
         $output .= html_writer::script('', $this->js_fix_url('/lib/javascript-static.js'));
 
+        # BGWS Modification START
+        # Author - Grant Jennings
+        # Jira ticket - CER-37
+        $output .= html_writer::script('', $this->js_fix_url('/lib/purify.min.js'));
+        # BGWS Modification END
+
         // All the other linked things from HEAD - there should be as few as possible.
         if ($this->jsincludes['head']) {
             foreach ($this->jsincludes['head'] as $url) {
