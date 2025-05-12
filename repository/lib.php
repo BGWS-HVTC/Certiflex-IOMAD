@@ -1795,22 +1795,28 @@ abstract class repository implements cacheable_object {
     public function get_file_size($source) {
         debugging(__FUNCTION__ . ' is deprecated, please do not use it any more', DEBUG_DEVELOPER);
 
-        $browser    = get_file_browser();
-        $params     = unserialize(base64_decode($source));
-        $contextid  = clean_param($params['contextid'], PARAM_INT);
-        $fileitemid = clean_param($params['itemid'], PARAM_INT);
-        $filename   = clean_param($params['filename'], PARAM_FILE);
-        $filepath   = clean_param($params['filepath'], PARAM_PATH);
-        $filearea   = clean_param($params['filearea'], PARAM_AREA);
-        $component  = clean_param($params['component'], PARAM_COMPONENT);
-        $context    = context::instance_by_id($contextid);
-        $file_info  = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
-        if (!empty($file_info)) {
-            $filesize = $file_info->get_filesize();
-        } else {
-            $filesize = null;
-        }
-        return $filesize;
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        // Removing the body of this method since it's deprecated and uses unserialize
+        // $browser    = get_file_browser();
+        // $params     = unserialize(base64_decode($source));
+        // $contextid  = clean_param($params['contextid'], PARAM_INT);
+        // $fileitemid = clean_param($params['itemid'], PARAM_INT);
+        // $filename   = clean_param($params['filename'], PARAM_FILE);
+        // $filepath   = clean_param($params['filepath'], PARAM_PATH);
+        // $filearea   = clean_param($params['filearea'], PARAM_AREA);
+        // $component  = clean_param($params['component'], PARAM_COMPONENT);
+        // $context    = context::instance_by_id($contextid);
+        // $file_info  = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
+        // if (!empty($file_info)) {
+        //     $filesize = $file_info->get_filesize();
+        // } else {
+        //     $filesize = null;
+        // }
+        // return $filesize;
+        return 0;
+        // BGWS Modification END
     }
 
     /**
