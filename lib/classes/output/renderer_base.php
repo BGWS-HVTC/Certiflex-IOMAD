@@ -155,33 +155,6 @@ class renderer_base {
         $this->page = $page;
         $this->target = $target;
     }
-    # BGWS Modification START
-    # Author - Anna Helton
-    # Jira ticket - CER-70
-    
-    public function sanitizeAllStrings($data) {
-        $config = HTMLPurifier_Config::createDefault();
-        $purifier = new HTMLPurifier($config);
-        if (is_string($data)) {
-            return $purifier->purify($data);
-        } elseif (is_array($data)) {
-            foreach ($data as $key => $value) {
-                $data[$key] = $this->sanitizeAllStrings($value);
-            }
-            return $data;
-        } elseif (is_object($data)) {
-            foreach ($data as $key => $value) {
-                $data->$key = $this->sanitizeAllStrings($value);
-            }
-            return $data;
-        }
-
-        // Non-string scalar (int, float, bool) or null — return as-is
-        return $data;
-    }
-
-    # BGWS Modification END
-
 
     /**
      * Renders a template by name with the given context.
@@ -196,6 +169,10 @@ class renderer_base {
      */
     public function render_from_template($templatename, $context) {
         $mustache = $this->get_mustache();
+
+        global $CFG;
+        require_once($CFG->dirroot . '/local/certiflexlib.php');
+        add_mustache_sanitize_helper($mustache);
 
         if ($mustache->hasHelper('uniqid')) {
             // Grab a copy of the existing helper to be restored later.
@@ -220,15 +197,7 @@ class renderer_base {
                 throw new moodle_exception('Unknown template: ' . $templatename);
             }
         }
-
-        # BGWS Modification START
-        # Author - Anna Helton
-        # Jira ticket - CER-70
-
-        $safe_context = $this->sanitizeAllStrings($context);
-        $renderedtemplate = trim($template->render($safe_context));
-
-        # BGWS Modification END
+        $renderedtemplate = trim($template->render($context));
 
         // If we had an existing uniqid helper then we need to restore it to allow
         // handle nested calls of render_from_template.

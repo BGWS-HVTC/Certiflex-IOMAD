@@ -65,7 +65,7 @@
             id="{{id}}"
             {{#multiple}}multiple{{/multiple}}>
         {{#options}}
-            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{{text}}}</option>
+            <option value="{{value}}" {{#selected}}selected{{/selected}}>{{#santize_html}}text{{/santize_html}}</option>
         {{/options}}
     </select>
     {{#manageurl}}
