@@ -130,82 +130,11 @@ function get_admins() {
     return $admins;
 }
 
-/**
- * Search through course users
- *
- * If $coursid specifies the site course then this function searches
- * through all undeleted and confirmed users
- *
- * @global object
- * @uses SITEID
- * @uses SQL_PARAMS_NAMED
- * @uses CONTEXT_COURSE
- * @param int $courseid The course in question.
- * @param int $groupid The group in question.
- * @param string $searchtext The string to search for
- * @param string $sort A field to sort by
- * @param array $exceptions A list of IDs to ignore, eg 2,4,5,8,9,10
- * @return array
- */
-function search_users($courseid, $groupid, $searchtext, $sort='', ?array $exceptions=null) {
-    global $DB;
-
-    $fullname  = $DB->sql_fullname('u.firstname', 'u.lastname');
-
-    if (!empty($exceptions)) {
-        list($exceptions, $params) = $DB->get_in_or_equal($exceptions, SQL_PARAMS_NAMED, 'ex', false);
-        $except = "AND u.id $exceptions";
-    } else {
-        $except = "";
-        $params = array();
-    }
-
-    if (!empty($sort)) {
-        $order = "ORDER BY $sort";
-    } else {
-        $order = "";
-    }
-
-    $select = "u.deleted = 0 AND u.confirmed = 1 AND (".$DB->sql_like($fullname, ':search1', false)." OR ".$DB->sql_like('u.email', ':search2', false).")";
-    $params['search1'] = "%$searchtext%";
-    $params['search2'] = "%$searchtext%";
-
-    if (!$courseid or $courseid == SITEID) {
-        $sql = "SELECT u.id, u.firstname, u.lastname, u.email
-                  FROM {user} u
-                 WHERE $select
-                       $except
-                $order";
-        return $DB->get_records_sql($sql, $params);
-
-    } else {
-        if ($groupid) {
-            $sql = "SELECT u.id, u.firstname, u.lastname, u.email
-                      FROM {user} u
-                      JOIN {groups_members} gm ON gm.userid = u.id
-                     WHERE $select AND gm.groupid = :groupid
-                           $except
-                     $order";
-            $params['groupid'] = $groupid;
-            return $DB->get_records_sql($sql, $params);
-
-        } else {
-            $context = context_course::instance($courseid);
-
-            // We want to query both the current context and parent contexts.
-            list($relatedctxsql, $relatedctxparams) = $DB->get_in_or_equal($context->get_parent_context_ids(true), SQL_PARAMS_NAMED, 'relatedctx');
-
-            $sql = "SELECT u.id, u.firstname, u.lastname, u.email
-                      FROM {user} u
-                      JOIN {role_assignments} ra ON ra.userid = u.id
-                     WHERE $select AND ra.contextid $relatedctxsql
-                           $except
-                    $order";
-            $params = array_merge($params, $relatedctxparams);
-            return $DB->get_records_sql($sql, $params);
-        }
-    }
-}
+# BGWS Modification START
+# Author - Tom Blankenship
+# Jira ticket - CER-38
+# Removed deprecated search_users function
+# BGWS Modification END
 
 /**
  * Returns SQL used to search through user table to find users (in a query

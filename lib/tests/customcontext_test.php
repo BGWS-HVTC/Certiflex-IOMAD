@@ -56,27 +56,32 @@ final class customcontext_test extends \advanced_testcase {
      */
     public function test_customcontexts(): void {
         global $CFG;
-        static $customcontexts = array(
-            11 => 'context_bogus1',
-            12 => 'context_bogus2',
-            13 => 'context_bogus3'
-        );
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-34
+        // custom_context_classes removed for SAST
+        // static $customcontexts = array(
+        //     11 => 'context_bogus1',
+        //     12 => 'context_bogus2',
+        //     13 => 'context_bogus3'
+        // );
 
-        // save any existing custom contexts
-        $existingcustomcontexts = get_config(null, 'custom_context_classes');
+        // // save any existing custom contexts
+        // $existingcustomcontexts = get_config(null, 'custom_context_classes');
 
-        set_config('custom_context_classes', serialize($customcontexts));
-        initialise_cfg();
-        context_helper::reset_levels();
-        $alllevels = context_helper::get_all_levels();
-        $this->assertEquals($alllevels[11], 'context_bogus1');
-        $this->assertEquals($alllevels[12], 'context_bogus2');
-        $this->assertEquals($alllevels[13], 'context_bogus3');
+        // set_config('custom_context_classes', serialize($customcontexts));
+        // initialise_cfg();
+        // context_helper::reset_levels();
+        // $alllevels = context_helper::get_all_levels();
+        // $this->assertEquals($alllevels[11], 'context_bogus1');
+        // $this->assertEquals($alllevels[12], 'context_bogus2');
+        // $this->assertEquals($alllevels[13], 'context_bogus3');
 
-        // clean-up & restore any custom contexts
-        set_config('custom_context_classes', ($existingcustomcontexts === false) ? null : $existingcustomcontexts);
-        initialise_cfg();
-        context_helper::reset_levels();
+        // // clean-up & restore any custom contexts
+        // set_config('custom_context_classes', ($existingcustomcontexts === false) ? null : $existingcustomcontexts);
+        // initialise_cfg();
+        // context_helper::reset_levels();
+        // BGWS Modification END
     }
 }
 

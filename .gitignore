@@ -129,8 +129,6 @@ UPGRADING-CURRENT.md
     /blocks/globalsearch
 ### Display randomg Glossary entry
     /blocks/glossary_random
-### IOMAD Commerce block
-    /blocks/iomad_commerce
 ### IOMAD display Online Users
     /blocks/iomad_onlineusers
 ### IOMAD welcome block
@@ -169,8 +167,6 @@ UPGRADING-CURRENT.md
     /enrol/lti
 ### MNet
     /enrol/mnet
-### Paypal
-    /enrol/paypal
 
 # Document Converters
 ### Google Drive
@@ -316,4 +312,14 @@ UPGRADING-CURRENT.md
 **/yui/src/**/*.js
 **/yui/build/*-debug.js
 
+# ANH - CER-41
+# Removing question types : calculated, calculatedmulti
+# These use `eval()` liberally with user input. Removing for SAST
+/question/type/calculated
+/question/type/calculatedmulti
+/question/type/calculatesimple
 
+# MDR - CER-34
+# Removing Flickr client and class
+/lib/flickrlib.php
+/lib/flickrclient.php

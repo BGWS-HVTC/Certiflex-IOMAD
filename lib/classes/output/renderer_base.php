@@ -151,6 +151,33 @@ class renderer_base {
         $this->target = $target;
     }
 
+#require_once('path/to/htmlpurifier/library/HTMLPurifier.auto.php';
+
+    function sanitizeAllStrings($data, $purifier = null) {
+        if (!$purifier) {
+            $config = HTMLPurifier_Config::createDefault();
+            $purifier = new HTMLPurifier($config);
+        }
+
+        if (is_string($data)) {
+            return $purifier->purify($data);
+        } elseif (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = sanitizeAllStrings($value, $purifier);
+            }
+            return $data;
+        } elseif (is_object($data)) {
+            foreach ($data as $key => $value) {
+                $data->$key = sanitizeAllStrings($value, $purifier);
+            }
+            return $data;
+        }
+
+        // Non-string scalar (int, float, bool) or null — return as-is
+        return $data;
+    }
+
+
     /**
      * Renders a template by name with the given context.
      *
