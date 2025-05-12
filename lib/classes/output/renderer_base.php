@@ -162,17 +162,16 @@ class renderer_base {
     public function sanitizeAllStrings($data) {
         $config = HTMLPurifier_Config::createDefault();
         $purifier = new HTMLPurifier($config);
-
         if (is_string($data)) {
             return $purifier->purify($data);
         } elseif (is_array($data)) {
             foreach ($data as $key => $value) {
-                $data[$key] = $this->sanitizeAllStrings($value, $purifier);
+                $data[$key] = $this->sanitizeAllStrings($value);
             }
             return $data;
         } elseif (is_object($data)) {
             foreach ($data as $key => $value) {
-                $data->$key = $this->sanitizeAllStrings($value, $purifier);
+                $data->$key = $this->sanitizeAllStrings($value);
             }
             return $data;
         }
@@ -196,13 +195,6 @@ class renderer_base {
      * @return string|boolean
      */
     public function render_from_template($templatename, $context) {
-        # BGWS Modification START
-        # Author - Anna Helton
-        # Jira ticket - CER-70
-        
-        $this->sanitizeAllStrings($context);
-        
-        # BGWS Modification END
         $mustache = $this->get_mustache();
 
         if ($mustache->hasHelper('uniqid')) {
@@ -229,7 +221,14 @@ class renderer_base {
             }
         }
 
-        $renderedtemplate = trim($template->render($context));
+        # BGWS Modification START
+        # Author - Anna Helton
+        # Jira ticket - CER-70
+
+        $safe_context = $this->sanitizeAllStrings($context);
+        $renderedtemplate = trim($template->render($safe_context));
+
+        # BGWS Modification END
 
         // If we had an existing uniqid helper then we need to restore it to allow
         // handle nested calls of render_from_template.
