@@ -24,6 +24,11 @@ use moodle_page;
 use moodle_url;
 use stdClass;
 use Mustache_Exception_UnknownTemplateException;
+global $CFG;
+require_once $CFG->libdir.'/htmlpurifier/HTMLPurifier.safe-includes.php';
+require_once $CFG->libdir.'/htmlpurifier/locallib.php';
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 /**
  * Simple base class for Moodle renderers.
@@ -150,25 +155,24 @@ class renderer_base {
         $this->page = $page;
         $this->target = $target;
     }
-
-#require_once('path/to/htmlpurifier/library/HTMLPurifier.auto.php';
-
-    function sanitizeAllStrings($data, $purifier = null) {
-        if (!$purifier) {
-            $config = HTMLPurifier_Config::createDefault();
-            $purifier = new HTMLPurifier($config);
-        }
+    # BGWS Modification START
+    # Author - Anna Helton
+    # Jira ticket - CER-70
+    
+    public function sanitizeAllStrings($data) {
+        $config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($config);
 
         if (is_string($data)) {
             return $purifier->purify($data);
         } elseif (is_array($data)) {
             foreach ($data as $key => $value) {
-                $data[$key] = sanitizeAllStrings($value, $purifier);
+                $data[$key] = $this->sanitizeAllStrings($value, $purifier);
             }
             return $data;
         } elseif (is_object($data)) {
             foreach ($data as $key => $value) {
-                $data->$key = sanitizeAllStrings($value, $purifier);
+                $data->$key = $this->sanitizeAllStrings($value, $purifier);
             }
             return $data;
         }
@@ -176,6 +180,8 @@ class renderer_base {
         // Non-string scalar (int, float, bool) or null — return as-is
         return $data;
     }
+
+    # BGWS Modification END
 
 
     /**
@@ -190,6 +196,13 @@ class renderer_base {
      * @return string|boolean
      */
     public function render_from_template($templatename, $context) {
+        # BGWS Modification START
+        # Author - Anna Helton
+        # Jira ticket - CER-70
+        
+        $this->sanitizeAllStrings($context);
+        
+        # BGWS Modification END
         $mustache = $this->get_mustache();
 
         if ($mustache->hasHelper('uniqid')) {
