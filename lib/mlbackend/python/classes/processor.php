@@ -565,7 +565,11 @@ class processor implements  \core_analytics\classifier, \core_analytics\regresso
 
         $output = null;
         $exitcode = null;
-        $result = exec($cmd, $output, $exitcode);
+        # BGWS Modification START
+        # Author - Tom Blankenship
+        # Jira ticket - CER-36
+        $result = exec(escapeshellcmd($cmd), $output, $exitcode);
+        # BGWS Modification END
 
         if (!$result) {
             throw new \moodle_exception($errorlangstr, 'analytics');
