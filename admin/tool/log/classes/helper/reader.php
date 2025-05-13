@@ -82,7 +82,11 @@ trait reader {
      */
     public static function decode_other(?string $other) {
         if ($other === 'N;' || preg_match('~^.:~', $other ?? '')) {
-            return unserialize($other, ['allowed_classes' => [stdClass::class]]);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            return unserialize_object($other);
+            // BGWS Modification END
         } else {
             return json_decode($other ?? '', true);
         }

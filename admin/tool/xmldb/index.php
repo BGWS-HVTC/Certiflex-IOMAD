@@ -48,7 +48,7 @@ if (!isset($SESSION->xmldb)) {
     // Author - Mike Robb
     // Jira ticket - CER-56
     // Restricting the unserialize to only be stdClass
-    $XMLDB = unserialize($SESSION->xmldb, ['allowed_classes' => [stdClass::class]]);
+    $XMLDB = unserialize_object($SESSION->xmldb);
     // BGWS Modification END
 }
 
