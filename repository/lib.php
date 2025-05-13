@@ -1621,7 +1621,11 @@ abstract class repository implements cacheable_object {
      */
     public function get_file_reference($source) {
         if ($source && $this->has_moodle_files()) {
-            $params = @json_decode(base64_decode($source), true);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $params = @unserialize_array(base64_decode($source));
+            // BGWS Modification END
             if (!is_array($params) || empty($params['contextid'])) {
                 throw new repository_exception('invalidparams', 'repository');
             }
