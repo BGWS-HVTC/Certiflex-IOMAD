@@ -791,7 +791,11 @@ function file_get_drafarea_files($draftitemid, $filepath = '/') {
             }
             // find the file this draft file was created from and count all references in local
             // system pointing to that file
-            $source = @unserialize($file->get_source() ?? '');
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $source = @unserialize_object($file->get_source() ?? '');
+            // BGWS Modification END
             if (isset($source->original)) {
                 $item->refcount = $fs->search_references_count($source->original);
             }
@@ -914,7 +918,7 @@ function file_restore_source_field_from_draft_file($storedfile) {
     // BGWS Modification START
     // Author - Mike Robb
     // Jira ticket - CER-56
-    $source = @json_decode($storedfile->get_source() ?? '');
+    $source = @unserialize_object($storedfile->get_source() ?? '');
     // BGWS Modification END
     if (!empty($source)) {
         if (is_object($source)) {
@@ -1212,7 +1216,7 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
             // BGWS Modification START
             // Author - Mike Robb
             // Jira ticket - CER-56
-            } else if (($source = @json_decode($newfile->get_source() ?? '')) && isset($source->original)) {
+            } else if (($source = @unserialize_object($newfile->get_source() ?? '')) && isset($source->original)) {
             // BGWS Modification END
                 // File has the 'original' - we need to update the file (it may even have not been changed at all).
                 $original = file_storage::unpack_reference($source->original);
@@ -1252,7 +1256,7 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
             // BGWS Modification START
             // Author - Mike Robb
             // Jira ticket - CER-
-            if ($source = @json_decode($newfile->get_source() ?? '')) {
+            if ($source = @unserialize_object($newfile->get_source() ?? '')) {
             // BGWS Modification END
                 $newsource = $source->source;
             }
@@ -1290,7 +1294,7 @@ function file_save_draft_area_files($draftitemid, $contextid, $component, $filea
             // BGWS Modification START
             // Author - Mike Robb
             // Jira ticket - CER-56
-            if ($source = @json_decode($file->get_source() ?? '')) {
+            if ($source = @unserialize_object($file->get_source() ?? '')) {
             // BGWS Modification END
                 // Field files.source for draftarea files contains serialised object with source and original information.
                 // We only store the source part of it for non-draft file area.
@@ -2952,7 +2956,7 @@ function file_overwrite_existing_draftfile(stored_file $newfile, stored_file $ex
     // BGWS Modification START
     // Author - Mike Robb
     // Jira ticket - CER-56
-    $source = @json_decode($existingfile->get_source() ?? '');
+    $source = @unserialize_object($existingfile->get_source() ?? '');
     // BGWS Modification END
     // Remember the original sortorder.
     $sortorder = $existingfile->get_sortorder();
@@ -2980,7 +2984,7 @@ function file_overwrite_existing_draftfile(stored_file $newfile, stored_file $ex
         // BGWS Modification START
         // Author - Mike Robb
         // Jira ticket - CER-56
-        if (!($newfilesource = @json_decode($newfile->get_source() ?? ''))) {
+        if (!($newfilesource = @unserialize_object($newfile->get_source() ?? ''))) {
         // BGWS Modification END
             $newfilesource = new stdClass();
         }

@@ -2542,7 +2542,7 @@ abstract class repository implements cacheable_object {
                 // BGWS Modification START
                 // Author - Mike Robb
                 // Jira ticket - CER-56
-                $source = @json_decode($file->get_source());
+                $source = @unserialize_object($file->get_source());
                 // BGWS Modification END
                 // Remember the original sortorder.
                 $sortorder = $file->get_sortorder();
@@ -2561,7 +2561,7 @@ abstract class repository implements cacheable_object {
                     // BGWS Modification START
                     // Author - Mike Robb
                     // Jira ticket - CER-56
-                    if (!($newfilesource = @json_decode($newfile->get_source()))) {
+                    if (!($newfilesource = @unserialize_object($newfile->get_source()))) {
                         $newfilesource = new stdClass();
                     }
                     // BGWS Modification END
@@ -2616,7 +2616,7 @@ abstract class repository implements cacheable_object {
                 // BGWS Modification START
                 // Author - Mike Robb
                 // Jira ticket - CER-
-                if (($filesource = @json_decode($file->get_source())) && isset($filesource->original)) {
+                if (($filesource = @unserialize_object($file->get_source())) && isset($filesource->original)) {
                     unset($filesource->original);
                     $file->set_source(serialize($filesource));
                 }
@@ -2666,7 +2666,7 @@ abstract class repository implements cacheable_object {
                     // BGWS Modification START
                     // Author - Mike Robb
                     // Jira ticket - CER-56
-                    if (($filesource = @json_decode($f->get_source())) && isset($filesource->original)) {
+                    if (($filesource = @unserialize_object($f->get_source())) && isset($filesource->original)) {
                         // unset original so the references are not shown any more
                         unset($filesource->original);
                         $f->set_source(serialize($filesource));

@@ -299,7 +299,7 @@ switch ($action) {
             // BGWS Modification START
             // Author - Mike Robb
             // Jira ticket - CER-56
-            $source = json_decode($file->get_source());
+            $source = unserialize_object($file->get_source());
             // BGWS Modification END
             $return = array('filename' => $filename, 'filepath' => $filepath, 'references' => array());
             $browser = get_file_browser();

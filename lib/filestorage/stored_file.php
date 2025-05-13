@@ -881,40 +881,8 @@ class stored_file {
      * @return string
      */
     public function get_source() {
-    // BGWS Modification START
-    // Author - Mike Robb
-    // Jira ticket - CER-56
-        $temp_src = $this->file_record->source;
-        
-        if(@str_starts_with($temp_src, $this->OBJ_STR)) {
-            $o = $this->parse_object_keys(substr($temp_src, strlen($this->OBJ_STR)), ['source', 'original']);
-            
-            $temp_src = json_encode($o);
-        }
-        return $temp_src;
+        return $this->file_record->source;
     }
-    
-    private $OBJ_STR = 'O:8:"stdClass":';
-    private function parse_object_keys($objectBodyStr, $keys) {
-        $o = new stdClass();
-        foreach($keys as $key) {
-            $o = $this->parse_object_key($o, $objectBodyStr, $key);
-        }
-    
-        return $o;
-    }
-
-    private function parse_object_key($o, $objectBodyStr, $key) {
-        $keyContainer = '"' . $key . '";s:';
-        if($val = strstr($objectBodyStr, $keyContainer)) {
-            $val = strstr(substr($val, strlen($keyContainer)), '"');
-            $valVal = strstr(substr($val, 1), '"', true);
-            $o->$key = $valVal;
-        }
-    
-        return $o;
-    }
-    // BGWS Modification END
 
     /**
      * Set license

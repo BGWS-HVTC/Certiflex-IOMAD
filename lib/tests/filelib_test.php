@@ -725,7 +725,7 @@ final class filelib_test extends \advanced_testcase {
         // BGWS Modification START
         // Author - Mike Robb
         // Jira ticket - CER-56
-        $source = json_decode($draftfile->get_source());
+        $source = unserialize_object($draftfile->get_source());
         // BGWS Modification END
         $this->assertSame($ref, $source->original);
         $this->assertSame($sourcefield, $source->source);
@@ -744,7 +744,7 @@ final class filelib_test extends \advanced_testcase {
         // BGWS Modification START
         // Author - Mike Robb
         // Jira ticket - CER-56
-        $source = json_decode($draftfile->get_source());
+        $source = unserialize_object($draftfile->get_source());
         // BGWS Modification END
         $newsourcefield = 'From flickr';
         $source->source = $newsourcefield;
