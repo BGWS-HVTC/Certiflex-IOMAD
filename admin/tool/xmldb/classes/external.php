@@ -92,7 +92,12 @@ class tool_xmldb_external extends external_api {
         if (!isset($SESSION->xmldb)) {
             $XMLDB = new stdClass;
         } else {
-            $XMLDB = unserialize($SESSION->xmldb);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            // Restricting the unserialize to only be stdClass
+            $XMLDB = unserialize($SESSION->xmldb, ['allowed_classes' => [stdClass::class]]);
+            // BGWS Modification END
         }
 
         $_POST['dir'] = $params['dir'];
