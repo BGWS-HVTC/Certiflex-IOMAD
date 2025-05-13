@@ -554,7 +554,12 @@ class processor implements  \core_analytics\classifier, \core_analytics\regresso
      */
     protected function exec_command(string $modulename, array $params, string $errorlangstr) {
 
-        $cmd = $this->pathtopython . ' -m moodlemlbackend.' . $modulename . ' ';
+         // BGWS Modification START
+        // Author - Clay Crawford
+        // Jira ticket - CER-83
+        // Old: $result = $cmd = $this->pathtopython . ' -m moodlemlbackend.' . $modulename . ' ';
+        $cmd = escapeshellarg($this->pathtopython) . ' -m ' . escapeshellarg('moodlemlbackend.' . $modulename) . ' ';
+        // BGWS Modification END
         foreach ($params as $param) {
             $cmd .= escapeshellarg($param) . ' ';
         }
@@ -566,6 +571,7 @@ class processor implements  \core_analytics\classifier, \core_analytics\regresso
         $output = null;
         $exitcode = null;
         $result = exec($cmd, $output, $exitcode);
+        $cmd = escapeshellarg($this->pathtopython) . ' -m ' . escapeshellarg('moodlemlbackend.' . $modulename) . ' ';
 
         if (!$result) {
             throw new \moodle_exception($errorlangstr, 'analytics');
