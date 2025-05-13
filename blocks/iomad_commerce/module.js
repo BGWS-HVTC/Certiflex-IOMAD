@@ -29,13 +29,35 @@ iomad.addLicenseBlock = function(button) {
         };
         for (var k in inputs) {
             var td = document.createElement('td');
-            td.innerHTML = inputs[k].prefix + '<input name="' + k + n + '" type="text" value="" size="5" />';
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-82
+            // Removing innerHTML call
+            if(inputs[k].prefix) {
+                td.appendChild(document.createTextNode(inputs[k].prefix));
+            }
+            var inputElement = document.createElement('input');
+            inputElement.name = k + n;
+            inputElement.type = "text";
+            inputElement.value = "";
+            inputElement.size = 5;
+            td.appendChild(inputElement);
+            // BGWS Modification END
             tr.appendChild(td);
         }
 
         var strdelete = Y.one('#deleteText').get('innerText');
         var td = document.createElement('td');
-        td.innerHTML = '<a href="#" onclick="iomad.removeLicenseBlock(this)">' + strdelete + '</a>';
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-82
+        // Removing innerHTML call
+        var aElm = document.createElement('a');
+        aElm.href = '#';
+        aElm.setAttribute('onclick', 'iomad.removeLicenseBlock(this)');
+        aElm.innerText = strdelete;
+        td.appendChild(aElm);
+        // BGWS Modification END
         tr.appendChild(td);
 
         tbody.appendChild(tr);
