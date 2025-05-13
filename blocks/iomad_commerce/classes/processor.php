@@ -198,72 +198,11 @@ class processor {
         }
     }
 
-    public static function licenseblock_onordercomplete($invoiceitem, $invoice) {
-        global $DB, $CFG;
-
-        $runtime = time();
-        $transaction = $DB->start_delegated_transaction();
-
-        // Get name for company license.
-        $companyid = iomad::get_my_companyid(context_system::instance());
-        $company = $DB->get_record('company', ['id' => $companyid]);
-        $item = $DB->get_record('course_shopsettings', ['id' => $invoiceitem->invoiceableitemid]);
-        $courses = $DB->get_records('course_shopsettings_courses', ['itemid' => $item->id]);
-        $licensename = $company->shortname . " [" . $item->name . "] " . userdate(time(), $CFG->iomad_date_format);
-        $count = $DB->count_records_sql("SELECT COUNT(*) FROM {companylicense} WHERE name LIKE '" .
-                                        (str_replace("'", "\'", $licensename)) . "%'");
-        if ($count) {
-            $licensename .= ' (' . ($count + 1) . ')';
-        }
-
-        // Create mdl_companylicense record.
-        $companylicense = (object) [];
-        $companylicense->name = $licensename;
-        $companylicense->program = $item->program;
-        if (empty($companylicense->program)) {
-            $companylicense->allocation = $invoiceitem->license_allocation;
-        } else {
-            $companylicense->allocation = $invoiceitem->license_allocation * count($courses);
-        }
-        $companylicense->humanallocation = $invoiceitem->license_allocation;
-        $companylicense->clearonexpire = $item->clearonexpire;
-        $companylicense->instant = $item->instant;
-
-        // Deal with license valid length.
-        $validlength = (int) $item->single_purchase_validlength / 86400;
-        if ($validlength == 0 ) {
-            // Always get 1 day.
-            $validlength = 1;
-        } 
-        $companylicense->validlength = $validlength;
-
-        // Deal with license shelf life.
-        if (!empty($item->single_purchase_shelflife)) {
-            $companylicense->expirydate = $item->single_purchase_shelflife + $runtime;
-        } else {
-            $companylicense->expirydate = 0;
-        }
-
-        // Deal with cut off time.
-        if (!empty($item->cutofftime)) {
-            $companylicense->cutoffdate = $item->cutofftime + $runtime;
-        } else {
-            $companylicense->cutoffdate = $companylicense->expirydate;
-        }
-
-        $companylicense->startdate = $runtime;
-        $companylicense->companyid = $company->id;
-        $companylicenseid = $DB->insert_record('companylicense', $companylicense);
-
-        foreach ($courses as $course) {
-            $DB->insert_record('companylicense_courses', ['licenseid' => $companylicenseid, 'courseid' => $course->courseid]);
-        }
-
-        // Mark the invoice item as processed.
-        $invoiceitem->processed = 1;
-        $DB->update_record('invoiceitem', $invoiceitem);
-        $transaction->allow_commit();
-    }
+    # BGWS Modification START
+    # Author - Tom Blankenship
+    # Jira ticket - CER-38
+    # Removed unused licenseblock_onordercomplete function.
+    # BGWS Modification END
 
     public static function email_invoices($invoiceid) {
         global $CFG, $DB;
