@@ -323,3 +323,7 @@ UPGRADING-CURRENT.md
 # Removing Flickr client and class
 /lib/flickrlib.php
 /lib/flickrclient.php
+
+# CEC - CER-85
+# Removing as we will not be running tests for the time being
+/lib/tests
