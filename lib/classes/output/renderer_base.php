@@ -24,11 +24,6 @@ use moodle_page;
 use moodle_url;
 use stdClass;
 use Mustache_Exception_UnknownTemplateException;
-global $CFG;
-require_once $CFG->libdir.'/htmlpurifier/HTMLPurifier.safe-includes.php';
-require_once $CFG->libdir.'/htmlpurifier/locallib.php';
-use HTMLPurifier;
-use HTMLPurifier_Config;
 
 /**
  * Simple base class for Moodle renderers.
@@ -119,6 +114,15 @@ class renderer_base {
                              'shortentext' => [$shortentexthelper, 'shorten'],
                              'userdate' => [$userdatehelper, 'transform'],
                          ];
+            # BGWS Modification START
+            # Author - Anna Helton
+            # Jira ticket - CER-70
+
+            require_once($CFG->dirroot . '/local/certiflex/classes/mustache_sanitize_helper.php');
+            $sanitizehelper = new mustache_sanitize_helper();
+            $helpers['sanitize_html']= [$sanitizehelper, "sanitize_html"];
+
+            # BGWS Modification END
 
             $this->mustache = new mustache_engine([
                 'cache' => $cachedir,
@@ -169,10 +173,6 @@ class renderer_base {
      */
     public function render_from_template($templatename, $context) {
         $mustache = $this->get_mustache();
-
-        global $CFG;
-        require_once($CFG->dirroot . '/local/certiflexlib.php');
-        add_mustache_sanitize_helper($mustache);
 
         if ($mustache->hasHelper('uniqid')) {
             // Grab a copy of the existing helper to be restored later.
