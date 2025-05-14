@@ -70,7 +70,12 @@ class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCac
         if (!file_exists($file)) {
             return false;
         }
-        return unserialize(file_get_contents($file));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $fc = file_get_contents($file);
+        return unserialize($fc, ['allowed_classes' => HTMLPurifier::$unserialize_safe_classes]);
+        // BGWS Modification END
     }
 
     /**

@@ -4383,7 +4383,11 @@ class curl_cache {
                 $fp = fopen($this->dir.$filename, 'r');
                 $size = filesize($this->dir.$filename);
                 $content = fread($fp, $size);
-                return unserialize($content);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                return unserialize_object($content);
+                // BGWS Modification END
             }
         }
         return false;

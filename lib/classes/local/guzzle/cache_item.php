@@ -16,6 +16,8 @@
 
 namespace core\local\guzzle;
 
+use Kevinrob\GuzzleCache\CacheEntry;
+
 /**
  * Class to define an interface for interacting with objects inside a cache.
  *
@@ -77,7 +79,7 @@ class cache_item {
                 // BGWS Modification START
                 // Author - Mike Robb
                 // Jira ticket - CER-56
-                $this->value = unserialize($content, ['allowed_classes' => ['Kevinrob\\GuzzleCache\\CacheEntry']]);
+                $this->value = unserialize($content, ['allowed_classes' => [CacheEntry::class]]);
                 // BGWS Modification END
             }
         }
