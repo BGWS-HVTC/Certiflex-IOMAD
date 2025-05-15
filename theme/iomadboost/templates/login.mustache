@@ -31,12 +31,12 @@
 }}
 {{> theme_iomadboost/head }}
 
-<body {{{ bodyattributes }}}>
+<body {{#bgws_sanitize_html}} bodyattributes {{/bgws_sanitize_html}}>
 {{> core/local/toast/wrapper}}
 
 <div id="page-wrapper">
 
-    {{{ output.standard_top_of_body_html }}}
+    {{#bgws_sanitize_html}} output.standard_top_of_body_html {{/bgws_sanitize_html}}
 
     <div id="page" class="container-fluid pt-5 mt-0">
         <div id="page-content" class="row">
@@ -44,7 +44,7 @@
                 <div id="region-main" class="col-12 h-100">
                 <div class="login-wrapper">
                     <div class="login-container">
-                    {{{ output.main_content }}}
+                    {{#bgws_sanitize_html}} output.main_content {{/bgws_sanitize_html}}
                     </div>
                 </div>
                 </div>

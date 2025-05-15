@@ -83,7 +83,7 @@ class Mustache_LambdaHelper
      * Get the value from $context using provided $context_key
      */
     public function getContextValue($contextKey){
-
+        return "hello, world";
     }
     // BGWS Modification END    
 }
