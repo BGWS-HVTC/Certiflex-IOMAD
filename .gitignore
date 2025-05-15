@@ -323,3 +323,11 @@ UPGRADING-CURRENT.md
 # Removing Flickr client and class
 /lib/flickrlib.php
 /lib/flickrclient.php
+
+# MDR - CER-56
+# Removing Guzzlecache storage we don't use
+lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/WordPressObjectCacheStorage.php
+lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/LaravelCacheStorage.php
+lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/FlysystemStorage.php
+lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/CompressedDoctrineCacheStorage.php
+lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/DoctrineCacheStorage.php
