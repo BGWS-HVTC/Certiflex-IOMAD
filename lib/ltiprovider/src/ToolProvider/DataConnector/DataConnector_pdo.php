@@ -662,7 +662,11 @@ class DataConnector_pdo extends DataConnector
                 $resourceLink->setConsumerId(null);
             }
             $resourceLink->ltiResourceLinkId = $row['lti_resource_link_id'];
-            $settings = unserialize($row['settings']);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $settings = unserialize_array($row['settings']);
+            // BGWS Modification END
             if (!is_array($settings)) {
                 $settings = array();
             }
