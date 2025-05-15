@@ -74,15 +74,16 @@ class Mustache_LambdaHelper
         return new self($this->mustache, $this->context, $delims);
     }
 
-    # BGWS Modification START
-    # Author - Anna Helton
-    # Jira ticket - CER-70
+    // BGWS Modification START
+    // Author - Anna Helton
+    // Jira ticket - CER-70
+    // Add a method for our sanitize_helper
     // TODO
     /**
      * Get the value from $context using provided $context_key
      */
     public function getContextValue($contextKey){
-        
+
     }
-    # BGWS Modification END    
+    // BGWS Modification END    
 }

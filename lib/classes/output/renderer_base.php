@@ -114,15 +114,17 @@ class renderer_base {
                              'shortentext' => [$shortentexthelper, 'shorten'],
                              'userdate' => [$userdatehelper, 'transform'],
                          ];
-            # BGWS Modification START
-            # Author - Anna Helton
-            # Jira ticket - CER-70
+            // BGWS Modification START
+            // Author - Anna Helton
+            // Jira ticket - CER-70
+            // Adding our HTML sanitizer to the MustacheEngine
 
             require_once($CFG->dirroot . '/local/certiflex/classes/mustache_sanitize_helper.php');
             $sanitizehelper = new mustache_sanitize_helper();
-            $helpers['sanitize_html']= [$sanitizehelper, "sanitize_html"];
+            // this is saying that {{#bgws_sanitize_html}} in templates should be handled by $sanitizeHelper->sanitize_html().
+            $helpers['bgws_sanitize_html']= [$sanitizehelper, "sanitize_html"];
 
-            # BGWS Modification END
+            // BGWS Modification END
 
             $this->mustache = new mustache_engine([
                 'cache' => $cachedir,
