@@ -23,7 +23,12 @@ class HTMLPurifier_EntityLookup
         if (!$file) {
             $file = HTMLPURIFIER_PREFIX . '/HTMLPurifier/EntityLookup/entities.ser';
         }
-        $this->table = unserialize(file_get_contents($file));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $fc = file_get_contents($file);
+        $this->table = unserialize($fc, ['allowed_classes' => [stdClass::class]]);
+        // BGWS Modification END
     }
 
     /**

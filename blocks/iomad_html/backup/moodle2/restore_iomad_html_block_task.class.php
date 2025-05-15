@@ -83,7 +83,11 @@ class restore_iomad_html_block_decode_content extends restore_decode_content {
     }
 
     protected function preprocess_field($field) {
-        $this->configdata = unserialize(base64_decode($field));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $this->configdata = unserialize_object(base64_decode($field));
+        // BGWS Modification END
         return isset($this->configdata->text) ? $this->configdata->text : '';
     }
 

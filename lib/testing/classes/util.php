@@ -274,7 +274,11 @@ abstract class testing_util {
             }
 
             $data = file_get_contents($datafile);
-            self::$tabledata = unserialize($data);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            self::$tabledata = unserialize_array($data);
+            // BGWS Modification END
         }
 
         if (!is_array(self::$tabledata)) {

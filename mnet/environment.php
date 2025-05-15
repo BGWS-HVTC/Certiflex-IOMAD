@@ -103,7 +103,11 @@ class mnet_environment {
                 set_config('openssl_history', serialize(array()), 'mnet');
                 $openssl_history = array();
             } else {
-                $openssl_history = unserialize($result);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $openssl_history = unserialize_object($result);
+                // BGWS Modification END
             }
 
             if(count($this->keypair)) {

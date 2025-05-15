@@ -260,7 +260,11 @@ class cachestore_static extends static_data_store implements cache_is_key_aware,
         if ($this->igbinaryfound) {
             return igbinary_unserialize($str);
         } else {
-            return unserialize($str);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            return unserialize_object($str);
+            // BGWS Modification END
         }
     }
 

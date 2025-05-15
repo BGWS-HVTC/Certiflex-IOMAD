@@ -296,7 +296,11 @@ switch ($action) {
         if (!$file) {
             echo json_encode(false);
         } else {
-            $source = unserialize($file->get_source());
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $source = unserialize_object($file->get_source());
+            // BGWS Modification END
             $return = array('filename' => $filename, 'filepath' => $filepath, 'references' => array());
             $browser = get_file_browser();
             if (isset($source->original)) {

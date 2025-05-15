@@ -6303,7 +6303,11 @@ class navigation_cache {
         if (!$this->cached($key)) {
             return;
         }
-        return unserialize($this->session[$key][self::CACHEVALUE]);
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        return @json_decode($this->session[$key][self::CACHEVALUE], true) ?? $this->session[$key][self::CACHEVALUE];
+        // BGWS Modification END
     }
 
     /**
@@ -6324,7 +6328,11 @@ class navigation_cache {
      */
     public function set($key, $information) {
         $this->ensure_navigation_cache_initialised();
-        $information = serialize($information);
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $information = json_encode($information);
+        // BGWS Modification END
         $this->session[$key] = [self::CACHEVALUE => $information];
         $this->cache->set($this->area, $this->session);
     }
@@ -6352,7 +6360,11 @@ class navigation_cache {
     public function compare($key, $value, $serialise = true) {
         if ($this->cached($key)) {
             if ($serialise) {
-                $value = serialize($value);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $value = json_encode($value);
+                // BGWS Modification END
             }
             return $this->session[$key][self::CACHEVALUE] === $value;
         }

@@ -722,7 +722,11 @@ final class filelib_test extends \advanced_testcase {
         $this->assertCount(3, $draftfiles);
 
         $draftfile = $fs->get_file($usercontext->id, 'user', 'draft', $draftitemid, $filepath, $filename);
-        $source = unserialize($draftfile->get_source());
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $source = unserialize_object($draftfile->get_source());
+        // BGWS Modification END
         $this->assertSame($ref, $source->original);
         $this->assertSame($sourcefield, $source->source);
 
@@ -737,7 +741,11 @@ final class filelib_test extends \advanced_testcase {
         $license = 'GPLv3';
         $draftfile->set_license($license);
         // If you want to really just change source field, do this.
-        $source = unserialize($draftfile->get_source());
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $source = unserialize_object($draftfile->get_source());
+        // BGWS Modification END
         $newsourcefield = 'From flickr';
         $source->source = $newsourcefield;
         $draftfile->set_source(serialize($source));

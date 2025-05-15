@@ -205,7 +205,11 @@ class mnet_xmlrpc_client {
                 $openssl_history = array();
                 set_config('openssl_history', serialize($openssl_history), 'mnet');
             } else {
-                $openssl_history = unserialize($openssl_history);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $openssl_history = unserialize_object($openssl_history);
+                // BGWS Modification END
             }
             foreach($openssl_history as $keyset) {
                 $keyresource = openssl_pkey_get_private($keyset['keypair_PEM']);

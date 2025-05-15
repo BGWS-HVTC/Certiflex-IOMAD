@@ -573,7 +573,11 @@ class DataConnector_mysql extends DataConnector
                     $resourceLink->setConsumerId(null);
                 }
                 $resourceLink->ltiResourceLinkId = $row->lti_resource_link_id;
-                $settings = unserialize($row->settings);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $settings = unserialize_object($row->settings);
+                // BGWS Modification END
                 if (!is_array($settings)) {
                     $settings = array();
                 }

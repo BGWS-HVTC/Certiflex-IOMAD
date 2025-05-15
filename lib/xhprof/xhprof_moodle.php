@@ -889,9 +889,17 @@ class moodle_xhprofrun implements iXHProfRuns {
 
         // Handle historical runs that aren't compressed.
         if (@gzuncompress(base64_decode($rec->data)) === false) {
-            return unserialize(base64_decode($rec->data));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            return unserialize_array(base64_decode($rec->data));
+            // BGWS Modification END
         } else {
-            $info = unserialize(gzuncompress(base64_decode($rec->data)));
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $info = unserialize_array(gzuncompress(base64_decode($rec->data)));
+            // BGWS Modification END
             if (!$this->reducedata) {
                 // We want to return the full data.
                 return $info;

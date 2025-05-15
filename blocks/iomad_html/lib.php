@@ -102,7 +102,11 @@ function block_iomad_html_global_db_replace($search, $replace) {
     $instances = $DB->get_recordset('block_instances', array('blockname' => 'iomad_html'));
     foreach ($instances as $instance) {
         // TODO: intentionally hardcoded until MDL-26800 is fixed
-        $config = unserialize(base64_decode($instance->configdata));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $config = unserialize_object(base64_decode($instance->configdata));
+        // BGWS Modification END
         if (isset($config->text) and is_string($config->text)) {
             $config->text = str_replace($search, $replace, $config->text);
             $DB->set_field('block_instances', 'configdata', base64_encode(serialize($config)), array('id' => $instance->id));
