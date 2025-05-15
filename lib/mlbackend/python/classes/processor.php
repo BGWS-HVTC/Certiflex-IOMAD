@@ -554,12 +554,7 @@ class processor implements  \core_analytics\classifier, \core_analytics\regresso
      */
     protected function exec_command(string $modulename, array $params, string $errorlangstr) {
 
-         // BGWS Modification START
-        // Author - Clay Crawford
-        // Jira ticket - CER-83
-        // Old: $result = $cmd = $this->pathtopython . ' -m moodlemlbackend.' . $modulename . ' ';
-        $cmd = escapeshellarg($this->pathtopython) . ' -m ' . escapeshellarg('moodlemlbackend.' . $modulename) . ' ';
-        // BGWS Modification END
+        $cmd = $this->pathtopython . ' -m moodlemlbackend.' . $modulename . ' ';
         foreach ($params as $param) {
             $cmd .= escapeshellarg($param) . ' ';
         }
