@@ -46,6 +46,20 @@ declare(strict_types=1);
 namespace SimplePie\Cache;
 
 use Memcache as NativeMemcache;
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
+use Psr\SimpleCache\CacheInterface;
+use SimplePie\Cache\Base;
+use SimplePie\Cache\BaseDataCache;
+use SimplePie\Cache\CallableNameFilter;
+use SimplePie\Cache\DataCache;
+use SimplePie\Cache\NameFilter;
+use SimplePie\Cache\Psr16;
+use SimplePie\Content\Type\Sniffer;
+use SimplePie\SimplePie;
+use stdClass;
+// BGWS Modification END
 
 /**
  * Caches data to memcache
@@ -133,7 +147,11 @@ class Memcache implements Base
         $data = $this->cache->get($this->name);
 
         if ($data !== false) {
-            return unserialize($data);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            return unserialize($data, ['allowed_classes' => [SimplePie::class, CacheInterface::class, Base::class, BaseDataCache::class, CallableNameFilter::class, DataCache::class, NameFilter::class, Psr16::class, Sniffer::class, stdClass::class]]);
+            // BGWS Modification END
         }
         return false;
     }
