@@ -16,7 +16,11 @@
 
 namespace core\local\guzzle;
 
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
 use Kevinrob\GuzzleCache\CacheEntry;
+// BGWS Modification END
 
 /**
  * Class to define an interface for interacting with objects inside a cache.
