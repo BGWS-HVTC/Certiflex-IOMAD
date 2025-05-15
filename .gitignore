@@ -324,6 +324,10 @@ UPGRADING-CURRENT.md
 /lib/flickrlib.php
 /lib/flickrclient.php
 
+# CEC - CER-85
+# Removing as we will not be running tests for the time being
+/lib/tests
+
 # MDR - CER-56
 # Removing Guzzlecache storage we don't use
 lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/WordPressObjectCacheStorage.php
