@@ -331,3 +331,4 @@ lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/LaravelCacheStorage.php
 lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/FlysystemStorage.php
 lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/CompressedDoctrineCacheStorage.php
 lib/guzzlehttp/kevinrob/guzzlecache/src/Storage/DoctrineCacheStorage.php
+lib/simplepie/
