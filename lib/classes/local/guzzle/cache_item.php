@@ -16,6 +16,12 @@
 
 namespace core\local\guzzle;
 
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
+use Kevinrob\GuzzleCache\CacheEntry;
+// BGWS Modification END
+
 /**
  * Class to define an interface for interacting with objects inside a cache.
  *
@@ -74,7 +80,11 @@ class cache_item {
                 $fp = fopen($dir . $filename, 'rb');
                 $size = filesize($dir . $filename);
                 $content = fread($fp, $size);
-                $this->value = unserialize($content);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $this->value = unserialize($content, ['allowed_classes' => [CacheEntry::class]]);
+                // BGWS Modification END
             }
         }
     }

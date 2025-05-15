@@ -1621,7 +1621,11 @@ abstract class repository implements cacheable_object {
      */
     public function get_file_reference($source) {
         if ($source && $this->has_moodle_files()) {
-            $params = @json_decode(base64_decode($source), true);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $params = @unserialize_array(base64_decode($source));
+            // BGWS Modification END
             if (!is_array($params) || empty($params['contextid'])) {
                 throw new repository_exception('invalidparams', 'repository');
             }
@@ -1795,22 +1799,28 @@ abstract class repository implements cacheable_object {
     public function get_file_size($source) {
         debugging(__FUNCTION__ . ' is deprecated, please do not use it any more', DEBUG_DEVELOPER);
 
-        $browser    = get_file_browser();
-        $params     = unserialize(base64_decode($source));
-        $contextid  = clean_param($params['contextid'], PARAM_INT);
-        $fileitemid = clean_param($params['itemid'], PARAM_INT);
-        $filename   = clean_param($params['filename'], PARAM_FILE);
-        $filepath   = clean_param($params['filepath'], PARAM_PATH);
-        $filearea   = clean_param($params['filearea'], PARAM_AREA);
-        $component  = clean_param($params['component'], PARAM_COMPONENT);
-        $context    = context::instance_by_id($contextid);
-        $file_info  = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
-        if (!empty($file_info)) {
-            $filesize = $file_info->get_filesize();
-        } else {
-            $filesize = null;
-        }
-        return $filesize;
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        // Removing the body of this method since it's deprecated and uses unserialize
+        // $browser    = get_file_browser();
+        // $params     = unserialize(base64_decode($source));
+        // $contextid  = clean_param($params['contextid'], PARAM_INT);
+        // $fileitemid = clean_param($params['itemid'], PARAM_INT);
+        // $filename   = clean_param($params['filename'], PARAM_FILE);
+        // $filepath   = clean_param($params['filepath'], PARAM_PATH);
+        // $filearea   = clean_param($params['filearea'], PARAM_AREA);
+        // $component  = clean_param($params['component'], PARAM_COMPONENT);
+        // $context    = context::instance_by_id($contextid);
+        // $file_info  = $browser->get_file_info($context, $component, $filearea, $fileitemid, $filepath, $filename);
+        // if (!empty($file_info)) {
+        //     $filesize = $file_info->get_filesize();
+        // } else {
+        //     $filesize = null;
+        // }
+        // return $filesize;
+        return 0;
+        // BGWS Modification END
     }
 
     /**
@@ -2529,7 +2539,11 @@ abstract class repository implements cacheable_object {
         if ($file = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $filepath, $filename)) {
             if ($tempfile = $fs->get_file($user_context->id, 'user', 'draft', $itemid, $newfilepath, $newfilename)) {
                 // Remember original file source field.
-                $source = @unserialize($file->get_source());
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $source = @unserialize_object($file->get_source());
+                // BGWS Modification END
                 // Remember the original sortorder.
                 $sortorder = $file->get_sortorder();
                 if ($tempfile->is_external_file()) {
@@ -2544,9 +2558,13 @@ abstract class repository implements cacheable_object {
                 $newfile = $fs->create_file_from_storedfile(array('filepath'=>$filepath, 'filename'=>$filename), $tempfile);
                 // Preserve original file location (stored in source field) for handling references
                 if (isset($source->original)) {
-                    if (!($newfilesource = @unserialize($newfile->get_source()))) {
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-56
+                    if (!($newfilesource = @unserialize_object($newfile->get_source()))) {
                         $newfilesource = new stdClass();
                     }
+                    // BGWS Modification END
                     $newfilesource->original = $source->original;
                     $newfile->set_source(serialize($newfilesource));
                 }
@@ -2595,10 +2613,14 @@ abstract class repository implements cacheable_object {
                 if ($fs->file_exists($usercontext->id, 'user', 'draft', $draftid, $updatedata['filepath'], $updatedata['filename'])) {
                     throw new moodle_exception('fileexists', 'repository');
                 }
-                if (($filesource = @unserialize($file->get_source())) && isset($filesource->original)) {
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-
+                if (($filesource = @unserialize_object($file->get_source())) && isset($filesource->original)) {
                     unset($filesource->original);
                     $file->set_source(serialize($filesource));
                 }
+                // BGWS Modification END
                 $file->rename($updatedata['filepath'], $updatedata['filename']);
                 // timemodified is updated only when file is renamed and not updated when file is moved.
                 $filemodified = $filemodified || ($updatedata['filename'] !== $filename);
@@ -2641,11 +2663,15 @@ abstract class repository implements cacheable_object {
             foreach ($files as $f) {
                 if (preg_match("|^$xfilepath|", $f->get_filepath())) {
                     $path = preg_replace("|^$xfilepath|", $updatedata['filepath'], $f->get_filepath());
-                    if (($filesource = @unserialize($f->get_source())) && isset($filesource->original)) {
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-56
+                    if (($filesource = @unserialize_object($f->get_source())) && isset($filesource->original)) {
                         // unset original so the references are not shown any more
                         unset($filesource->original);
                         $f->set_source(serialize($filesource));
                     }
+                    // BGWS Modification END
                     $f->rename($path, $f->get_filename());
                     if ($filemodified && $f->get_filepath() === $updatedata['filepath'] && $f->get_filename() === $filename) {
                         $f->set_timemodified(time());

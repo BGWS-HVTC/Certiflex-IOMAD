@@ -685,7 +685,11 @@ class portfolio_exporter {
             }
             throw new portfolio_exception('invalidtempid', 'portfolio');
         }
-        $exporter = unserialize(base64_decode($data->data));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $exporter = unserialize(base64_decode($data->data), ['allowed_classes' => [portfolio_exporter::class]]);
+        // BGWS Modification END
         if ($exporter->instancefile) {
             require_once($CFG->dirroot . '/' . $exporter->instancefile);
         }
@@ -697,7 +701,11 @@ class portfolio_exporter {
             return; // Should never get here!
         }
 
-        $exporter = unserialize(serialize($exporter));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $exporter = unserialize(serialize($exporter), ['allowed_classes' => [portfolio_exporter::class]]);
+        // BGWS Modification END
         if (!$exporter->get('id')) {
             // workaround for weird case
             // where the id doesn't get saved between a new insert

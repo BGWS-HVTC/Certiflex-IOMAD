@@ -14,6 +14,13 @@ namespace ScssPhp\ScssPhp;
 
 use Exception;
 use ScssPhp\ScssPhp\Version;
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
+use ScssPhp\ScssPhp\Compiler\CachedResult;
+use ScssPhp\ScssPhp\CompilationResult;
+use stdClass;
+// BGWS Modification END
 
 /**
  * The scss cache manager.
@@ -133,7 +140,11 @@ class Cache
                 $cacheTime + self::$gcLifetime > time()
             ) {
                 $c = file_get_contents($fileCache);
-                $c = unserialize($c);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $c = unserialize($c, ['allowed_classes' => [CachedResult::class, CompilationResult::class, stdClass::class]]);
+                // BGWS Modification END
 
                 if (\is_array($c) && isset($c['value'])) {
                     return $c['value'];
