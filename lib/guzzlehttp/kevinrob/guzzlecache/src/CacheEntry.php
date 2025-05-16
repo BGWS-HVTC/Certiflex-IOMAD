@@ -6,6 +6,11 @@ use GuzzleHttp\Psr7\PumpStream;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
+use DateTime;
+// BGWS Modification END
 
 class CacheEntry implements \Serializable
 {
@@ -328,6 +333,28 @@ class CacheEntry implements \Serializable
 
     public function unserialize($data)
     {
-        $this->__unserialize(unserialize($data));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $res = unserialize($data, ['allowed_classes' => [MessageInterface::class, DateTime::class]]);
+        $prefix = '';
+        if (isset($data["\0*\0request"])) {
+            // We are unserializing a cache entry which was serialized with a version < 4.1.1
+            $prefix = "\0*\0";
+        }
+        if(is_array($res) && $res[$prefix.'request'] instanceof MessageInterface && $res[$prefix.'response'] instanceof MessageInterface and $res[$prefix.'staleAt'] instanceof DateTime && $res[$prefix.'staleIfErrorTo'] instanceof DateTime && $res[$prefix.'staleWhileRevalidateTo'] instanceof DateTime && $res[$prefix.'dateCreated'] instanceof DateTime && is_int($res[$prefix.'timestampStale']))
+        {
+            $res = [
+                'request' => unserialize(serialize($res[$prefix.'request'])),
+                'response' => unserialize(serialize($res[$prefix.'response'])),
+                'staleAt' => $res[$prefix.'staleAt'],
+                'staleIfErrorTo' => $res[$prefix.'staleIfErrorTo'],
+                'staleWhileRevalidateTo' => $res[$prefix.'staleWhileRevalidateTo'],
+                'dateCreated' => $res[$prefix.'dateCreated'],
+                'timestampStale' => $res[$prefix.'timestampStale']
+            ];
+            $this->__unserialize($res);
+        }
+        // BGWS Modification END
     }
 }
