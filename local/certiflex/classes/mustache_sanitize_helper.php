@@ -19,8 +19,8 @@ class mustache_sanitize_helper {
     }
 
     public function sanitize_html($context_key, \Mustache_LambdaHelper $helper) {
-        // TODO - we need to get the value from $context based on $context_key
         $raw_html=$helper->getContextValue($context_key);
-        return $helper->render($this->purifier->purify($raw_html));
+        $sanitized=$this->purifier->purify($raw_html);
+        return $helper->render($sanitized);
     }
 }

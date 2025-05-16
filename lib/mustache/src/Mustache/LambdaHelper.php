@@ -75,15 +75,19 @@ class Mustache_LambdaHelper
     }
 
     // BGWS Modification START
-    // Author - Anna Helton
+    // Author - Anna Helton, Clay Crawford
     // Jira ticket - CER-70
     // Add a method for our sanitize_helper
-    // TODO
     /**
      * Get the value from $context using provided $context_key
      */
-    public function getContextValue($contextKey){
-        return "hello, world";
+    public function getContextValue($contextKey) {
+        $contextKey = trim($contextKey);
+
+        $value = $this->context->findDot($contextKey);
+
+        return $value;
     }
+
     // BGWS Modification END    
 }
