@@ -6,7 +6,11 @@ namespace Phpml;
 
 use Phpml\Exception\FileException;
 use Phpml\Exception\SerializeException;
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
 use Phpml\Classification\MLPClassifier;
+// BGWS Modification END
 
 class ModelManager
 {
