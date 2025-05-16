@@ -116,7 +116,7 @@ class auth_plugin_jwt extends auth_plugin_base {
         // The username will be the DOD id, so you can look it up by that
         $existingUser = $DB->record_exists('user', ["email" => $payload->email]);
 
-        // If we don't have an existing user, do othing and return;
+        // If we don't have an existing user, do nothing and return;
 
         /**
          * This call will automatically complete the user's login process,
