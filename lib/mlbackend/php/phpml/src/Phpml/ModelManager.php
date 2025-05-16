@@ -6,6 +6,11 @@ namespace Phpml;
 
 use Phpml\Exception\FileException;
 use Phpml\Exception\SerializeException;
+// BGWS Modification START
+// Author - Mike Robb
+// Jira ticket - CER-56
+use Phpml\Classification\MLPClassifier;
+// BGWS Modification END
 
 class ModelManager
 {
@@ -32,10 +37,18 @@ class ModelManager
             throw new FileException(sprintf('File "%s" cannot be opened.', basename($filepath)));
         }
 
-        $object = unserialize((string) file_get_contents($filepath));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $contents = file_get_contents($filepath);
+        // Check the top level objects are valid and safe allowed classes
+        $object = unserialize((string) $contents, ['allowed_classes' => [Pipeline::class, MLPClassifier::class]]);
         if ($object === false || !$object instanceof Estimator) {
             throw new SerializeException(sprintf('"%s" cannot be unserialized.', basename($filepath)));
         }
+        // If the initial unserialize check passes our two allowed classes, unserialize fully unrestricted
+        $object = unserialize((string)$contents);
+        // BGWS Modification END
 
         return $object;
     }
