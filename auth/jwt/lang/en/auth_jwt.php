@@ -29,3 +29,4 @@ $string['checkjwtauthdetails'] = '<p>The <em>JWT authentication</em> plugin is o
 $string['checkjwtautherror'] = 'The JWT authentication plugin cannot be used on production sites.';
 $string['checkjwtauth'] = 'JWT authentication';
 $string['checkjwtauthok'] = 'The JWT authentication plugin is disabled.';
+$string['eventuserdodidnotfound'] = 'User dodid not found.';

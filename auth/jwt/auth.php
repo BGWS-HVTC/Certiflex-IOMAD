@@ -19,6 +19,7 @@
  *
  * @package auth_jwt
  * @author Trey Hayden <trey.hayden.ctr@adlnet.gov>
+ * @author BG Workforce
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 
@@ -27,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir.'/authlib.php');
 
 /**
- * Plugin for no authentication.
+ * Plugin for JWT authentication.
  */
 class auth_plugin_jwt extends auth_plugin_base {
 
@@ -70,7 +71,7 @@ class auth_plugin_jwt extends auth_plugin_base {
     public function loginpage_hook() {
         $this->attempt_jwt_login();
     }
-
+    
     private function attempt_jwt_login() {
         global $CFG, $DB;
 
@@ -108,21 +109,41 @@ class auth_plugin_jwt extends auth_plugin_base {
         
         // Parse the JWT and get the payload that has the user info.
         $payload = $this->parse_jwt_component($authHeader);
-        if (is_null($payload))
+
+        if (!isset($payload)) {
+            error_log('Could not parse auth header.' . $authHeader);
             return;
+        }
 
-        // Look up user based on dodcert or gamewarden_dodcert
-        // You will need to strip the DOD id from the cert
-        // The username will be the DOD id, so you can look it up by that
-        $existingUser = $DB->record_exists('user', ["email" => $payload->email]);
+        $dodcert = $payload->dodcert ?? $payload->dodcert_gamewarden ?? null;
+        if (!isset($dodcert)) {
+            return;
+        }
 
-        // If we don't have an existing user, do nothing and return;
+        // Get last part of dodcert string using period as delimiter
+        $parts = explode('.', $dodcert);
+        $dodId = end($parts);
 
-        /**
-         * This call will automatically complete the user's login process,
-         * so if that doesn't happen then something else failed above.
-         */
-        complete_user_login($existingUser);
+        if (!$user = $DB->get_record('user', array('username' => $dodId, 'deleted' => 0, 'suspended' => 0))) {
+
+            $eventother = array('dodid' => $dodId);
+            $event = \auth_jwt\event\user_dodid_notfound::create(array(
+                'other' => $eventother
+            ));
+            $event->trigger();
+            error_log('Could not get user from DB for ' . $dodId);
+            return;
+        }
+
+        $urltogo = optional_param('urltogo', $CFG->wwwroot, PARAM_LOCALURL);
+        $urltogo = $urltogo ?: $CFG->wwwroot;
+
+        core_user::require_active_user($user, true, true);
+
+        complete_user_login($user);
+        \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
+
+        redirect($urltogo);
     }
 
     private function parse_jwt_component($authHeader) {
@@ -211,7 +232,7 @@ class auth_plugin_jwt extends auth_plugin_base {
      * @return bool
      */
     function can_change_password() {
-        return true;
+        return false;
     }
 
     /**
@@ -230,7 +251,7 @@ class auth_plugin_jwt extends auth_plugin_base {
      * @return bool
      */
     function can_reset_password() {
-        return true;
+        return false;
     }
 
     /**
