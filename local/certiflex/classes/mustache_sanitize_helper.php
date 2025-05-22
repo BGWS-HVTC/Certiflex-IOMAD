@@ -20,7 +20,11 @@ class mustache_sanitize_helper {
 
     public function sanitize_html($context_key, \Mustache_LambdaHelper $helper) {
         $raw_html=$helper->getContextValue($context_key);
-        $sanitized=$this->purifier->purify($raw_html);
-        return $helper->render($sanitized);
+        if (!is_string($raw_html)) {
+            return '';
+        }
+        $rendered=$helper->render($raw_html);
+        $sanitized=$this->purifier->purify($rendered);
+        return $rendered;
     }
 }
