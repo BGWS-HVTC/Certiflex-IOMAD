@@ -46,7 +46,11 @@ $PAGE->set_context($companycontext);
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('base');
 $PAGE->set_title(get_string('managetitle', 'local_iomad_learningpath'));
-$PAGE->set_heading(get_string('managecourses', 'local_iomad_learningpath'));
+// BGWS Modification START
+// Author - Clay Crawford
+// Jira ticket - CER-76
+$PAGE->set_heading(get_string('managecourses', 'local_iomad_learningpath', $company->get_name()));
+// BGWS Modification END
 $output = $PAGE->get_renderer('local_iomad_learningpath');
 
 // IOMAD stuff
