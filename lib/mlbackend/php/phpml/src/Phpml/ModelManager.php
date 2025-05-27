@@ -47,7 +47,9 @@ class ModelManager
             throw new SerializeException(sprintf('"%s" cannot be unserialized.', basename($filepath)));
         }
         // If the initial unserialize check passes our two allowed classes, unserialize fully unrestricted
-        $object = unserialize((string)$contents);
+        if($object !== false && $object instanceof Estimator) {
+            $object = unserialize(serialize($object));
+        }
         // BGWS Modification END
 
         return $object;

@@ -151,7 +151,11 @@ class repository_coursefiles extends repository {
         $browser = get_file_browser();
 
         // the final file
-        $params = unserialize(base64_decode($encoded));
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
+        $params = unserialize_array(base64_decode($encoded));
+        // BGWS Modification END
         $contextid  = clean_param($params['contextid'], PARAM_INT);
         $fileitemid = clean_param($params['itemid'], PARAM_INT);
         $filename = clean_param($params['filename'], PARAM_FILE);

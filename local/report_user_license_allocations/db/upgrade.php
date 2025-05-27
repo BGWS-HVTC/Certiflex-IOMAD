@@ -132,7 +132,11 @@ function xmldb_local_report_user_license_allocations_upgrade($oldversion) {
                 $licenseallocations = $DB->get_records('logstore_standard_log', array('userid' => $user->id, 'eventname' => '\block_iomad_company_admin\event\user_license_assigned'));
                 foreach ($licenseallocations as $event) {
                     // Get the payload.
-                    $evententries = unserialize($event->other);
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-56
+                    $evententries = unserialize_array($event->other);
+                    // BGWS Modification END
 
                     if (!$DB->get_record('local_report_user_lic_allocs', array('userid' => $user->id,
                                                                               'licenseid' => $evententries['licenseid'],
