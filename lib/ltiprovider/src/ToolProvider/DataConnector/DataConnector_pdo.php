@@ -477,7 +477,11 @@ class DataConnector_pdo extends DataConnector
             $context->setConsumerId(intval($row['consumer_pk']));
             $context->ltiContextId = $row['lti_context_id'];
             $context->type = $row['type'];
-            $settings = unserialize($row['settings']);
+            // BGWS Modification START
+            // Author - Mike Robb
+            // Jira ticket - CER-56
+            $settings = unserialize_array($row['settings']);
+            // BGWS Modification END
             if (!is_array($settings)) {
                 $settings = array();
             }

@@ -83,9 +83,9 @@ class cache_item {
                 // BGWS Modification START
                 // Author - Mike Robb
                 // Jira ticket - CER-56
-                $this->value = unserialize($content, ['allowed_classes' => [CacheEntry::class]]);
-                if($this->value instanceof CacheEntry) {
-                    $this->value = unserialize($content);
+                $cacheEntry = unserialize($content, ['allowed_classes' => [CacheEntry::class]]);
+                if($cacheEntry instanceof CacheEntry) {
+                    $this->value = unserialize(serialize($cacheEntry));
                 }
                 // BGWS Modification END
             }

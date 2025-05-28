@@ -43,11 +43,18 @@ class ModelManager
         $contents = file_get_contents($filepath);
         // Check the top level objects are valid and safe allowed classes
         $object = unserialize((string) $contents, ['allowed_classes' => [Pipeline::class, MLPClassifier::class]]);
+        // BGWS Modification END
         if ($object === false || !$object instanceof Estimator) {
             throw new SerializeException(sprintf('"%s" cannot be unserialized.', basename($filepath)));
         }
+        
+        // BGWS Modification START
+        // Author - Mike Robb
+        // Jira ticket - CER-56
         // If the initial unserialize check passes our two allowed classes, unserialize fully unrestricted
-        $object = unserialize((string)$contents);
+        if($object !== false && $object instanceof Estimator) {
+            $object = unserialize(serialize($object));
+        }
         // BGWS Modification END
 
         return $object;
