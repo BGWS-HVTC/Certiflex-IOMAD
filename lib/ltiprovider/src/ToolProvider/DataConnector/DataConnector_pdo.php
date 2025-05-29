@@ -93,7 +93,11 @@ class DataConnector_pdo extends DataConnector
                     $consumer->consumerGuid = $row['consumer_guid'];
                     $consumer->profile = json_decode($row['profile']);
                     $consumer->toolProxy = $row['tool_proxy'];
-                    $settings = unserialize($row['settings']);
+                    // BGWS Modification START
+                    // Author - Mike Robb
+                    // Jira ticket - CER-56
+                    $settings = unserialize_array($row['settings']);
+                    // BGWS Modification END
                     if (!is_array($settings)) {
                         $settings = array();
                     }
@@ -374,7 +378,11 @@ class DataConnector_pdo extends DataConnector
                 $consumer->consumerGuid = $row['consumer_guid'];
                 $consumer->profile = json_decode($row['profile']);
                 $consumer->toolProxy = $row['tool_proxy'];
-                $settings = unserialize($row['settings']);
+                // BGWS Modification START
+                // Author - Mike Robb
+                // Jira ticket - CER-56
+                $settings = unserialize_array($row['settings']);
+                // BGWS Modification END
                 if (!is_array($settings)) {
                     $settings = array();
                 }
