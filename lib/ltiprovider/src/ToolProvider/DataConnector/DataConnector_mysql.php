@@ -588,7 +588,7 @@ class DataConnector_mysql extends DataConnector
                 // BGWS Modification START
                 // Author - Mike Robb
                 // Jira ticket - CER-56
-                $settings = unserialize_object($row->settings);
+                $settings = unserialize_array($row->settings);
                 // BGWS Modification END
                 if (!is_array($settings)) {
                     $settings = array();
