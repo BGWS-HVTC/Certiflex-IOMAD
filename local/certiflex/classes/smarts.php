@@ -31,59 +31,62 @@ use local_certiflex\queue;
 class smarts {
 
     public static function send(): bool {
+        global $CFG;
         $config = get_config('local_certiflex');
 
-        $response = (object)['completions' => []];
+        if($config->send_completions) {
+            $response = (object)['completions' => []];
 
-        $queue = queue::get_queue();
+            $queue = queue::get_queue();
 
-        if ($queue) {
-            $data = [];
-            foreach ($queue as $id => $completiondata) {
-                $data[] = [
-                    'dod_id' => (int)$completiondata->dodid,
-                    'skill_id' => (int)$completiondata->skillid,
-                    'completion_time' => date(DATE_ATOM, $completiondata->completiondate),
-                ];
-            }
+            if ($queue) {
+                $data = [];
+                foreach ($queue as $id => $completiondata) {
+                    $data[] = [
+                        'dod_id' => (int)$completiondata->dodid,
+                        'skill_id' => (int)$completiondata->skillid,
+                        'completion_time' => date(DATE_ATOM, $completiondata->completiondate),
+                    ];
+                }
 
-            $body = json_encode($data);
+                $body = json_encode($data);
 
-            // Send request to the Smarts API.
-            if ($config->api_key && $config->endpoint_url) {
-                $url = $config->endpoint_url . '/External/Completions';
-                $curl = new curl();
-                $curl->setHeader("X-API-KEY: " . $config->api_key);
-                $response = $curl->post($url, $body);
-                $response = json_decode($response);
-            }
-        }
-
-        foreach ($queue as $id => $completiondata) {
-            $status = log::STATUS_FAIL;
-            foreach ($response->completions as $res) {
-                if ($res->dod_id == $completiondata->dodid && $res->skill_id == $completiondata->skillid) {
-                    $message = $res->message;
-                    if (!empty($res->full_name)) {
-                        $message .= ' / ' . $res->full_name;
-                    }
-                    if (!empty($res->skill_display_name)) {
-                        $message .= ' / ' . $res->skill_display_name;
-                    }
-
-                    log::save_log(
-                        $completiondata->dodid,
-                        $completiondata->skillid,
-                        $completiondata->completiondate,
-                        $res->successful ? log::STATUS_SUCCESS : log::STATUS_FAIL,
-                        $message
-                    );
-
-                    $status = $res->successful ? log::STATUS_SUCCESS : log::STATUS_FAIL;
+                // Send request to the Smarts API.
+                if ($config->api_key && $CFG->SMARTS_ENDPOINT && $config->send_completions) {
+                    $url = $CFG->SMARTS_ENDPOINT . '/External/Completions';
+                    $curl = new curl();
+                    $curl->setHeader("X-API-KEY: " . $config->api_key);
+                    $response = $curl->post($url, $body);
+                    $response = json_decode($response);
                 }
             }
 
-            queue::update($id, $status);
+            foreach ($queue as $id => $completiondata) {
+                $status = log::STATUS_FAIL;
+                foreach ($response->completions as $res) {
+                    if ($res->dod_id == $completiondata->dodid && $res->skill_id == $completiondata->skillid) {
+                        $message = $res->message;
+                        if (!empty($res->full_name)) {
+                            $message .= ' / ' . $res->full_name;
+                        }
+                        if (!empty($res->skill_display_name)) {
+                            $message .= ' / ' . $res->skill_display_name;
+                        }
+
+                        log::save_log(
+                            $completiondata->dodid,
+                            $completiondata->skillid,
+                            $completiondata->completiondate,
+                            $res->successful ? log::STATUS_SUCCESS : log::STATUS_FAIL,
+                            $message
+                        );
+
+                        $status = $res->successful ? log::STATUS_SUCCESS : log::STATUS_FAIL;
+                    }
+                }
+
+                queue::update($id, $status);
+            }
         }
 
         return true;
