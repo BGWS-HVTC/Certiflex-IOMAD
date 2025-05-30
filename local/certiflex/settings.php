@@ -35,11 +35,11 @@ if ($ADMIN->fulltree) {
     ));
 
     // Endpoint URL.
-    $settings->add(new admin_setting_configtext(
-        'local_certiflex/endpoint_url',
-        new lang_string('endpoint_url', 'local_certiflex'),
-        new lang_string('endpoint_url_description', 'local_certiflex'),
-        ''
+    $settings->add(new admin_setting_configcheckbox(
+        'local_certiflex/send_completions',
+        new lang_string('send_completions', 'local_certiflex'),
+        $CFG->SMARTS_ENDPOINT,
+      1
     ));
 
     // API Key.

@@ -24,8 +24,7 @@
 $string['pluginname'] = "Certiflex";
 $string['status_fail'] = "Fail";
 $string['status_success'] = "Success";
-$string['endpoint_url'] = "Endpoint URL";
-$string['endpoint_url_description'] = "";
+$string['send_completions'] = "Allow the sending of completions to SMARTS";
 $string['certiflex_header'] = "Certiflex settings";
 $string['certiflex_header1'] = "SMARTS API settings";
 $string['skillid'] = 'Skill ID';
